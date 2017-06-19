@@ -8,11 +8,16 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <h3>Bienvenu dans Couristic</h3>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <ion-list>
+    <ion-item>
+    <ion-label floating>Ville</ion-label>
+    <ion-input [(ngModel)]="ville" type="text"></ion-input>
+    </ion-item>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+   <button ion-button large (tap)='mapsAPI()' id="btn">Liste des hôtels</button>
+    
+  </ion-list>
+
 </ion-content>
