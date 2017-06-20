@@ -4,6 +4,10 @@ import { NavController } from 'ionic-angular';
 //Mes importations
 import { NavParams } from 'ionic-angular';
 
+//
+import { GooglePlaceApiService }   from '../../services/googleplaceapi.service';
+import { GooglePlaceApiGlobal }   from '../../models/googleplaceapi-global.model';
+
 @Component({
   selector: 'page-listehotels',
   templateUrl: 'listehotels.html'
