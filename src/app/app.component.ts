@@ -1,14 +1,20 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { Component, ViewChild }         from '@angular/core';
+import { Nav, Platform }                from 'ionic-angular';
+import { StatusBar }                    from '@ionic-native/status-bar';
+import { SplashScreen }                 from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+//Pages of the app
+import { HomePage }                     from '../pages/home/home';
+import { ListPage }                     from '../pages/list/list';
+import { ListehotelsPage }              from '../pages/listehotels/listehotels';
+import { FavorisPage }                  from '../pages/favoris/favoris';
+import { TrajetsEnregistresPage }       from '../pages/trajetsenregistres/trajetsenregistres';
+
 
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
@@ -22,7 +28,10 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'List', component: ListPage },
+      { title: 'Liste des hôtels', component: ListehotelsPage },
+      { title: 'Lieux favoris', component: FavorisPage },
+      { title: 'Trajets enregistrés', component: TrajetsEnregistresPage }
     ];
 
   }
