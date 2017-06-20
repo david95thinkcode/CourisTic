@@ -6,6 +6,7 @@
 import { GooglePlaceApiResult   }   from './googleplaceapi-result.model';
 
 export class GooglePlaceApiPlaceSearchResult {
+    
     status: string;
     html_attributions: string[];
     results: GooglePlaceApiResult[];
