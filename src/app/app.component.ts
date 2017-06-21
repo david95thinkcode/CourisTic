@@ -9,6 +9,7 @@ import { ListPage }                     from '../pages/list/list';
 import { ListehotelsPage }              from '../pages/listehotels/listehotels';
 import { FavorisPage }                  from '../pages/favoris/favoris';
 import { TrajetsEnregistresPage }       from '../pages/trajetsenregistres/trajetsenregistres';
+import { AidePage }                     from '../pages/aide/aide';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class MyApp {
       { title: 'List', component: ListPage },
       { title: 'Liste des hôtels', component: ListehotelsPage },
       { title: 'Lieux favoris', component: FavorisPage },
-      { title: 'Trajets enregistrés', component: TrajetsEnregistresPage }
+      { title: 'Trajets enregistrés', component: TrajetsEnregistresPage },
+      { title: 'Aide', component: AidePage }
     ];
 
   }

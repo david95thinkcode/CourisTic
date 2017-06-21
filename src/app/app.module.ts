@@ -9,6 +9,8 @@ import { ListPage }                   from '../pages/list/list';
 import { ListehotelsPage  }           from  '../pages/listehotels/listehotels';
 import { FavorisPage }                from '../pages/favoris/favoris';
 import { TrajetsEnregistresPage }     from '../pages/trajetsenregistres/trajetsenregistres';
+import { EstimationPage }             from '../pages/estimation/estimation';
+import { AidePage }                   from '../pages/aide/aide';
 
 //component
 import { StatusBar }                  from '@ionic-native/status-bar';
@@ -25,7 +27,9 @@ import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
     ListPage,
     ListehotelsPage,
     FavorisPage,
-    TrajetsEnregistresPage
+    TrajetsEnregistresPage,
+    EstimationPage,
+    AidePage
   ],
   imports: [
     HttpModule,
@@ -39,7 +43,9 @@ import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
     ListPage,
     ListehotelsPage,
     FavorisPage,
-    TrajetsEnregistresPage
+    TrajetsEnregistresPage,
+    EstimationPage,
+    AidePage
   ],
   providers: [
     GooglePlaceApiService,

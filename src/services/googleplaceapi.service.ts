@@ -46,8 +46,8 @@ export class GooglePlaceApiService {
      */
     public getTextSearchPlaces(): Promise<GooglePlaceApiPlaceSearchResult> {
         
-        //query: string = "";
-        const parameters = `query=${this.query}&key=${this.apikey}`;
+        const query = "";
+        const parameters = `query=${query}&key=${this.apikey}`;
         const url: string = this.baseURLTextSearch+this.output+parameters;
         
         return this.http.get(url)
@@ -70,8 +70,8 @@ export class GooglePlaceApiService {
 
      //TODO: rechercher comment passer un paramètre string a cette méthode
     public getNearbySearchPlaces(): Promise<GooglePlaceApiPlaceSearchResult> {
-        
-        const parameters = `query=${this.query}&key=${this.apikey}`;
+        const query = "";
+        const parameters = `query=${query}&key=${this.apikey}`;
         const url: string = this.baseURLTextSearch+this.output+parameters;
         
         return this.http.get(url)
@@ -88,5 +88,21 @@ export class GooglePlaceApiService {
      * La troisième recherchera les lieux proches de type hotels dans un radius d'au plus 5000m (5km)
      */
 
-    //TODO: 
+
+    //########################################################################"
+    //A DEFAUT DE CE QUI EST AU DESSUS, CREONS DES METHODES INDIVIDUELLES    
+/*
+    //TODO: Ecrire le code de la méthode ci-dessous pour charger les hotels proches
+    public getNearbyRestaurants(): Promise<GooglePlaceApiPlaceSearchResult> {
+        const type = "restaurant";
+        
+        //TODO:doit retourner un tableau d'objet GooglePlaceApiResult des Restaurants proches
+    }
+
+    //TODO: Ecrire le code de la méthode ci-dessous pour charger les restaurants et bars proches
+    public getNearbyHostels(): Promise<GooglePlaceApiPlaceSearchResult> {
+        const type = "hostel";
+        
+        //TODO: doit retourner un tableau d'objet GooglePlaceApiResult des hotels proches
+    }*/
 }
