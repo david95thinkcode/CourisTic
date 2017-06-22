@@ -7,8 +7,9 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 //my models
-import { GooglePlaceApiGlobal   }   from    '../models/googleplaceapi-global.model';
-import { GooglePlaceApiPlaceSearchResult   }   from    '../models/googleplaceapi-placesearchresult.model';
+import { GooglePlaceApiResult   }               from    '../models/googleplaceapi-result.model';
+import { GooglePlaceApiGlobal   }               from    '../models/googleplaceapi-global.model';
+import { GooglePlaceApiPlaceSearchResult   }    from    '../models/googleplaceapi-placesearchresult.model';
 
 @Injectable()
 export class GooglePlaceApiService {
@@ -25,10 +26,20 @@ export class GooglePlaceApiService {
         
     }
 
-    public getDetails(): Promise<GooglePlaceApiGlobal> {
-        const parameters = `placeid=${this.placeid}&key=${this.apikey}`;
+    /** Retourne un objet GooglePlaceApiGlobal représentant un lieu 
+     * dont l'id a été passé en paramètre  
+     * @param placeid Identifiant Google du lieu 
+     */
+    public getDetails(placeid: string): Promise<GooglePlaceApiGlobal> {
+        
+        //Pour les test utilisons ceci par défaut si rien n'est reçu
+        if (placeid == null || placeid == "")
+        {
+            placeid = "ChIJ1zcFVeRUIxARZ86krdRQJwM";
+        }
 
         //formation de l'url 
+        const parameters = `placeid=${this.placeid}&key=${this.apikey}`;
         const url: string = this.baseURLDetail+this.output+parameters;
         
         console.log("URL ==> : " + url);
@@ -41,12 +52,12 @@ export class GooglePlaceApiService {
 
     /**
      * Google place API - Text Search
-     * This method should receive a string of the place to search
+     * @param query Chaine représentant le lieu à chercher
+     * Renvoie les lieux trouvés
      * ############################## ########
      */
-    public getTextSearchPlaces(): Promise<GooglePlaceApiPlaceSearchResult> {
-        
-        const query = "";
+    getTextSearchPlaces(query: string): Promise<GooglePlaceApiPlaceSearchResult> {
+                
         const parameters = `query=${query}&key=${this.apikey}`;
         const url: string = this.baseURLTextSearch+this.output+parameters;
         
@@ -56,10 +67,10 @@ export class GooglePlaceApiService {
         .catch(error => console.log('Une erreur est survenue dans le service ' + error))
     }
 
-    /**
-     * Google place API - Nearby Search
+    /****Google place API - Nearby Search
+     * 
      * Parameters :
-     * - radius : Définit la distance (en mètres) jusqu'à laquelle renvoyer les résultats de lieu.
+     * - radius : Définit la distance (en mètres) délimitant la zone de recherche des lieux proches.
      * - location : latitude,longitude.
      * 
      * ### #Facultatives parameters
@@ -68,11 +79,20 @@ export class GooglePlaceApiService {
      * ############################## ########
      */
 
-     //TODO: rechercher comment passer un paramètre string a cette méthode
-    public getNearbySearchPlaces(): Promise<GooglePlaceApiPlaceSearchResult> {
-        const query = "";
-        const parameters = `query=${query}&key=${this.apikey}`;
-        const url: string = this.baseURLTextSearch+this.output+parameters;
+/** Retourne tous lieux proches du lieu reçu en paramètre 
+ * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
+ * @param radius Distance en mètres délimitant la zone de recherche
+ */
+    public getNearbySearchPlaces(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
+       //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
+       
+       //Un radius par défaut
+       if(radius == 0 || radius==null) {
+            radius = 5000;
+       }
+
+        const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&key=${this.apikey}`;
+        const url: string = this.baseURLNearbySearch+this.output+parameters;
         
         return this.http.get(url)
         .toPromise()
@@ -80,29 +100,46 @@ export class GooglePlaceApiService {
         .catch(error => console.log('Une erreur est survenue dans le service ' + error))
     }
 
-    //TODO: Créer un methode getNearbySearchPlaces qui recoit les paramètres facultatifs
-    /**
-     * @Description
-     * La première recherchera les lieux proches de type restaurants dans un radius d'au plus 5000m (5km)
-     * La seconde recherchera les lieux proches de type hotels dans un radius d'au plus 5000m (5km)
-     * La troisième recherchera les lieux proches de type hotels dans un radius d'au plus 5000m (5km)
-     */
+/** Retourne les hotels proches du lieu reçu en paramètre 
+ * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
+ * @param radius Distance en mètres délimitant la zone de recherche
+ */
+    public getNearbyHostels(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
+       const type: string = "hostel";
 
+       //Un radius par défaut
+       if(radius == 0 || radius==null) {
+            radius = 5000;
+       }
 
-    //########################################################################"
-    //A DEFAUT DE CE QUI EST AU DESSUS, CREONS DES METHODES INDIVIDUELLES    
-/*
-    //TODO: Ecrire le code de la méthode ci-dessous pour charger les hotels proches
-    public getNearbyRestaurants(): Promise<GooglePlaceApiPlaceSearchResult> {
-        const type = "restaurant";
+        const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&type=${type}&key=${this.apikey}`;
+        const url: string = this.baseURLNearbySearch+this.output+parameters;
         
-        //TODO:doit retourner un tableau d'objet GooglePlaceApiResult des Restaurants proches
+        return this.http.get(url)
+        .toPromise()
+        .then(response => response.json() as GooglePlaceApiPlaceSearchResult)
+        .catch(error => console.log('Une erreur est survenue dans le service ' + error))
     }
 
-    //TODO: Ecrire le code de la méthode ci-dessous pour charger les restaurants et bars proches
-    public getNearbyHostels(): Promise<GooglePlaceApiPlaceSearchResult> {
-        const type = "hostel";
+/** Retourne les Restaurants proches du lieu reçu en paramètre 
+ * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
+ * @param radius Distance en mètres délimitant la zone de recherche
+ */
+    public getNearbyRestaurants(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
+       const type: string = "restaurant";
+
+       //Un radius par défaut
+       if(radius == 0 || radius==null) {
+            radius = 5000;
+       }
+
+        const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&type=${type}&key=${this.apikey}`;
+        const url: string = this.baseURLNearbySearch+this.output+parameters;
         
-        //TODO: doit retourner un tableau d'objet GooglePlaceApiResult des hotels proches
-    }*/
+        return this.http.get(url)
+        .toPromise()
+        .then(response => response.json() as GooglePlaceApiPlaceSearchResult)
+        .catch(error => console.log('Une erreur est survenue dans le service ' + error))
+    }
+    
 }
