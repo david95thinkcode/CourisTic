@@ -20,8 +20,8 @@ export class GooglePlaceApiResult {
     icon: string;
     scope: string;
     placeid: string;
-    rating: string; //normally integer
-    price_level: string; //normally integer
+    rating: number; 
+    price_level: number; 
 
     url: string;
     website: string;
