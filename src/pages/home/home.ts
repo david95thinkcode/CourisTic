@@ -7,18 +7,18 @@ import { GooglePlaceApiGlobal }   from '../../models/googleplaceapi-global.model
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html' 
 })
 
 export class HomePage {
   ville: string;
   detail: GooglePlaceApiGlobal;
 
-  constructor(public navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService) 
+  constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService) 
   {
     this.ville="Cotonou";
 
-    this.googlePlaceApiService.getDetails()
+    this.googlePlaceApiService.getDetails("")
     .then(lesdetails => {
       this.detail = lesdetails;
       console.log(this.detail);
