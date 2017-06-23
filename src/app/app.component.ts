@@ -10,7 +10,7 @@ import { ListehotelsPage }              from '../pages/listehotels/listehotels';
 import { FavorisPage }                  from '../pages/favoris/favoris';
 import { TrajetsEnregistresPage }       from '../pages/trajetsenregistres/trajetsenregistres';
 import { AidePage }                     from '../pages/aide/aide';
-
+import { RecherchePage }                from '../pages/recherche/recherche';
 
 @Component({
   templateUrl: 'app.html'

@@ -11,6 +11,7 @@ import { FavorisPage }                from '../pages/favoris/favoris';
 import { TrajetsEnregistresPage }     from '../pages/trajetsenregistres/trajetsenregistres';
 import { EstimationPage }             from '../pages/estimation/estimation';
 import { AidePage }                   from '../pages/aide/aide';
+import { RecherchePage }              from '../pages/recherche/recherche';
 
 //component
 import { StatusBar }                  from '@ionic-native/status-bar';
@@ -29,7 +30,8 @@ import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
     FavorisPage,
     TrajetsEnregistresPage,
     EstimationPage,
-    AidePage
+    AidePage,
+    RecherchePage
   ],
   imports: [
     HttpModule,
@@ -45,7 +47,8 @@ import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
     FavorisPage,
     TrajetsEnregistresPage,
     EstimationPage,
-    AidePage
+    AidePage,
+    RecherchePage
   ],
   providers: [
     GooglePlaceApiService,
