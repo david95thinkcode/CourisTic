@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>" {{ query }} "</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+  <!--
+    <ion-item *ngFor="let result of response.results">
+    <ion-thumbnail item-start>
+      <img [src]="result.url_to_main_Image">
+    </ion-thumbnail>
+    <h2>{{ result.name }}</h2>
+    <p> {{ result.formatted_address }}</p>
+    <button ion-button clear item-end>S'y rendre</button>
+  </ion-item>
+  -->
+
+  </ion-list>
+  <ion-card *ngFor="let result of response.results">
+    <img [src]="result.url_to_main_Image"/>
+    <ion-card-content>
+      <ion-card-title>
+        {{ result.name }}
+      </ion-card-title>
+      <p> {{ result.formatted_address }}</p>
+    </ion-card-content>
+    <ion-row>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="heart"></ion-icon>
+        <div>Favoris</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="flag"></ion-icon>
+        <div>Lieux Proches</div>
+      </button>
+    </ion-col>
+    <!--
+    <ion-col center text-center>
+      <ion-note>
+        11h ago
+      </ion-note>
+    </ion-col>
+    -->
+  </ion-row>
+  </ion-card>
+
+</ion-content>

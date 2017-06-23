@@ -33,5 +33,5 @@ export class GooglePlaceApiResult {
     
     //The main picture is the first photo on photos array
     reference_to_main_Image: string;
-
+    url_to_main_Image: string;
 }

@@ -64,7 +64,7 @@ export class GooglePlaceApiService {
         return this.http.get(url)
         .toPromise()
         .then(response => response.json() as GooglePlaceApiPlaceSearchResult)
-        .catch(error => console.log('Une erreur est survenue dans le service ' + error))
+        .catch(error => console.log('TextSearch error :: ' + error))
     }
 
     /****Google place API - Nearby Search
