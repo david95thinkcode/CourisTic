@@ -14,12 +14,12 @@ import { GooglePlaceApiPlaceSearchResult   }    from    '../models/googleplaceap
 @Injectable()
 export class GooglePlaceApiService {
     private baseURLDetail: string = "https://maps.googleapis.com/maps/api/place/details/";
-    private baseURLTextSearch = "https://maps.googleapis.com/maps/api/place/textsearch/";
-    private baseURLNearbySearch = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
-    private baseURLRadarSearch = "https://maps.googleapis.com/maps/api/place/radarsearch/";
+    private baseURLTextSearch: string = "https://maps.googleapis.com/maps/api/place/textsearch/";
+    private baseURLNearbySearch: string = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
+    private baseURLRadarSearch: string = "https://maps.googleapis.com/maps/api/place/radarsearch/";
+    private baseURLPlacePhoto: string = "https://maps.googleapis.com/maps/api/place/photo?";
 
     private output: string = 'json?';
-    private placeid: string = "ChIJ1zcFVeRUIxARZ86krdRQJwM";
     private apikey: string = "AIzaSyCLO_avsG1-B2kj5-FDfdE3CMguE2RESiY";
 
     constructor (private http: Http) {
@@ -39,10 +39,10 @@ export class GooglePlaceApiService {
         }
 
         //formation de l'url 
-        const parameters = `placeid=${this.placeid}&key=${this.apikey}`;
+        const parameters = `placeid=${placeid}&key=${this.apikey}`;
         const url: string = this.baseURLDetail+this.output+parameters;
         
-        console.log("URL ==> : " + url);
+        //console.log("URL ==> : " + url);
 
         return this.http.get(url)
         .toPromise()
@@ -142,4 +142,26 @@ export class GooglePlaceApiService {
         .catch(error => console.log('Une erreur est survenue dans le service ' + error))
     }
     
+    /**Retourne l'URL d'une photo dont la référence a été passé en paramètre
+     * Learn more on : https://developers.google.com/places/web-service/photos
+     * @param photo_reference Référence de la photo à afficher 
+     */
+    getPhotoURL(photo_reference: string ): string  {  
+
+        //Taille par défaut à laquelle l'image sera reçue      
+        var maxWidth : number = 700;
+        var maxHeight : number = 600;
+        var picture_URL: string;
+
+        if ((photo_reference != null) || (photo_reference != "")) {
+            
+        }
+        else  {
+            console.log("Reférence de la photo non reçu");
+        }
+        const parameters = `maxwidth=${maxWidth}&maxheight=${maxHeight}&photoreference=${photo_reference}&key=${this.apikey}`;
+        picture_URL = this.baseURLPlacePhoto+parameters;
+        
+        return picture_URL;
+    }
 }
