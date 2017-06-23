@@ -8,5 +8,5 @@ import { GooglePlaceApiResult   }   from './googleplaceapi-result.model';
 export class GooglePlaceApiGlobal {
     status: string;
     html_attributions: string[];
-    results: GooglePlaceApiResult;
+    result: GooglePlaceApiResult;
 }

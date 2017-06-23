@@ -23,9 +23,4 @@ export class ListehotelsPage {
     console.log("Ville reçue => " + this.ville);
   }
 
-//Pour utiliser l'API
-  private mapsAPI() {
-
-  }
-
 }
