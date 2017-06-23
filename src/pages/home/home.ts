@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { ListehotelsPage  } from '../../pages/listehotels/listehotels';
+import { RecherchePage  } from '../../pages/recherche/recherche';
 
 import { GooglePlaceApiService }    from '../../services/googleplaceapi.service';
 import { GooglePlaceApiGlobal }     from '../../models/googleplaceapi-global.model';
@@ -12,14 +12,18 @@ import { GooglePlaceApiResult   }   from '../../models/googleplaceapi-result.mod
 })
 
 export class HomePage {
+
   mainImageIndex: number = 1;
+  
   detail: GooglePlaceApiGlobal = new GooglePlaceApiGlobal();
   result: GooglePlaceApiResult = new GooglePlaceApiResult();
+  
   picture_url: string;
+  place_to_search: string;
 
-  constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService) 
+  constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService)
   {
-    
+      this.place_to_search = "Akpakpa";
     this.Initialise();
  
   }
@@ -42,6 +46,15 @@ export class HomePage {
       this.picture_url = this.googlePlaceApiService.getPhotoURL(this.result.reference_to_main_Image);
       
     });
+  }
 
+  /**Pour lancer une recherche de lieux à partir
+   * 
+   */
+  public searchPlaces() {
+
+    this.navCtrl.push(RecherchePage, {
+      query: this.place_to_search
+    });
   }
 }

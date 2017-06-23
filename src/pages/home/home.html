@@ -7,16 +7,29 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-searchbar></ion-searchbar>
+<ion-content>
+  <!--
+    <ion-searchbar></ion-searchbar>
+  -->
   
+  <ion-list padding>
+
+    <ion-item >
+      <ion-label floating>Lieu à rechercher</ion-label>
+      <ion-input type="text" [(ngModel)]="place_to_search">{{ place_to_search }}</ion-input>
+    </ion-item>
+
+    <br> 
+    <button ion-button full icon-right (tap)="searchPlaces()">OK
+      <ion-icon name="search"></ion-icon>
+    </button>
+    
+  </ion-list>
+
   <ion-card>
     <img [src]="picture_url"/>
-    <ion-card-content>
-      <ion-card-title>
-        {{ result.name }}
-      </ion-card-title>
-    </ion-card-content>
+    <div class="card-title">{{ result.name }}</div>
+    <!-- <div class="card-subtitle">41 Listings</div> -->
   </ion-card>
 
 </ion-content>
