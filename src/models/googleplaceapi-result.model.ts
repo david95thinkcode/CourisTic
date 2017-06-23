@@ -30,4 +30,8 @@ export class GooglePlaceApiResult {
     geometry : GooglePlaceApiGeometry;
     adress_components: GooglePlaceApiAdressComponent[];
     photos: GooglePlaceApiPhoto[];
+    
+    //The main picture is the first photo on photos array
+    reference_to_main_Image: string;
+
 }
