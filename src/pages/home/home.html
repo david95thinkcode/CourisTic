@@ -8,21 +8,15 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item>
-    <ion-label floating>Ville</ion-label>
-    <ion-input [(ngModel)]="ville" type="text"></ion-input>
-    </ion-item>
-
-  </ion-list>
-
+  <ion-searchbar></ion-searchbar>
+  
   <ion-card>
-    <img src="assets/img/gow.jpg"/>
+    <img [src]="picture_url"/>
     <ion-card-content>
       <ion-card-title>
-        God of War 4 
+        {{ result.name }}
       </ion-card-title>
-  </ion-card-content>
-</ion-card>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
