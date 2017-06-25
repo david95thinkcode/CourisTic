@@ -8,7 +8,65 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Estimation des coûts de votre visite touristique </h3>
-        
+  <h3> {{ userDestination.name }} </h3>
+  <ion-card>
+    <img />
+    <ion-card-content>
+      <ion-card-title>
+
+      </ion-card-title>
+    </ion-card-content>
+    <ion-row>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="heart"></ion-icon>
+        <div>Favoris</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="flag"></ion-icon>
+        <div>Lieux Proches</div>
+      </button>
+    </ion-col>
+    <!--
+    <ion-col center text-center>
+      <ion-note>
+        11h ago
+      </ion-note>
+    </ion-col>
+    -->
+  </ion-row>
+  </ion-card>
+
+  <!-- Durée trajet -->
+  <ion-card>
+    <ion-card-header>
+      Durée du trajet
+    </ion-card-header>
+    <ion-card-content>
+      
+    </ion-card-content>
+  </ion-card>
+
+  <!--Lieux proches -->
+  <ion-list>
+  
+    <ion-item>
+      Hotels à proximité
+      <button ion-button outline item-end icon-left>
+        <ion-icon name="star"></ion-icon>
+        Left Icon
+      </button>
+    </ion-item>
+    <ion-item>
+      Resto proches
+      <button ion-button outline item-end icon-left>
+        <ion-icon name="star"></ion-icon>
+        Left Icon
+      </button>
+    </ion-item>
+   
+</ion-list>
 
 </ion-content>
