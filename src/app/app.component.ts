@@ -11,6 +11,7 @@ import { FavorisPage }                  from '../pages/favoris/favoris';
 import { TrajetsEnregistresPage }       from '../pages/trajetsenregistres/trajetsenregistres';
 import { AidePage }                     from '../pages/aide/aide';
 import { RecherchePage }                from '../pages/recherche/recherche';
+import { EstimationPage }               from '../pages/estimation/estimation';
 
 @Component({
   templateUrl: 'app.html'

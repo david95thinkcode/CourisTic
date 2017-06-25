@@ -13,12 +13,13 @@ import { EstimationPage }             from '../pages/estimation/estimation';
 import { AidePage }                   from '../pages/aide/aide';
 import { RecherchePage }              from '../pages/recherche/recherche';
 
-//component
+//Ionic native
 import { StatusBar }                  from '@ionic-native/status-bar';
 import { SplashScreen }               from '@ionic-native/splash-screen';
 
 import { HttpModule  }                from "@angular/http";
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
+import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
   ],
   providers: [
     GooglePlaceApiService,
+    GoogleMapsApiService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
