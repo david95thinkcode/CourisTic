@@ -28,7 +28,7 @@
 
   <ion-card>
     <img [src]="picture_url"/>
-    <div class="card-title">{{ result.name }}</div>
+    <div class="card-title" *ngIf="result">{{ result.name }}</div>
     <!-- <div class="card-subtitle">41 Listings</div> -->
   </ion-card>
 

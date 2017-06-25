@@ -24,7 +24,7 @@ export class HomePage {
   constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService)
   {
       this.place_to_search = "Akpakpa";
-    this.Initialise();
+      this.Initialise();
  
   }
 

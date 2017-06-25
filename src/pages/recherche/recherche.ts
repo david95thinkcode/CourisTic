@@ -1,11 +1,14 @@
 import { Component }                           from '@angular/core';
 import { NavController, NavParams }            from 'ionic-angular';
 
+import { EstimationPage  }                     from '../../pages/estimation/estimation';
+
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
 import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi-global.model';
 import { GooglePlaceApiResult   }              from '../../models/googleplaceapi-result.model';
 import { GooglePlaceApiPhoto   }               from '../../models/googleplaceapi-photo.model';
 import { GooglePlaceApiPlaceSearchResult   }   from '../../models/googleplaceapi-placesearchresult.model';
+import { IonicNativeGeolocation }              from '../../models/ionicnative-geolocation.model';
 
 @Component({
   selector: 'page-recherche',
@@ -14,6 +17,7 @@ import { GooglePlaceApiPlaceSearchResult   }   from '../../models/googleplaceapi
 
 export class RecherchePage {
   
+  currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
   response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
   result: GooglePlaceApiResult = new GooglePlaceApiResult();
   results: GooglePlaceApiResult[];
@@ -39,7 +43,6 @@ export class RecherchePage {
 
     else 
     {
-      console.log("Lieu a rechercher : " + this.query);
       this.googlePlaceApiService.getTextSearchPlaces(this.query)
       .then(fetched => 
       {
@@ -74,4 +77,20 @@ export class RecherchePage {
     }   
 
   }
+
+/** Ouvre la page d'estimation de l'application
+ * et lui envoie les paramètres nécessaires qui sont :
+ * la lieu choisi par l'utilisateur
+ * la position actuelle du téléphone (ou de l'utiliateur)
+ */
+  public showEstimation(choice : GooglePlaceApiResult) {
+    //Valeur de test
+    this.currentLocation.latitude = 6.415745100000001;
+    this.currentLocation.longitude = 2.3413236;
+
+    this.navCtrl.push(EstimationPage, {
+      currentLocation: this.currentLocation,
+      userChoice: choice
+    })
+  } 
 }
