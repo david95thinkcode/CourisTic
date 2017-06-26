@@ -3,7 +3,7 @@
  * https://developers.google.com/maps/documentation/distance-matrix/?hl=fr
  */
 
-import { GoogleMapsApiElement   }            from      './googlemapsapi-element.model';
+import { GoogleMapsApiRow   }            from      './googlemapsapi-row.model';
 
 /**
  * Représente le résultat d'une requete de Google Maps Api
@@ -12,6 +12,6 @@ export class GoogleMapsApiGlobal {
 
     destination_addresses : string[];
     origin_addresses : string[];
-    rows : GoogleMapsApiElement[];
+    rows : GoogleMapsApiRow[];
     status : string;
 }

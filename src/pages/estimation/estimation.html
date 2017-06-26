@@ -8,12 +8,12 @@
 </ion-header>
 
 <ion-content padding>
-  <h3> {{ userDestination.name }} </h3>
+  <h3>  </h3>
   <ion-card>
-    <img />
+    <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
     <ion-card-content>
       <ion-card-title>
-
+        Pour aller à {{ trajet.userDestination.name }}
       </ion-card-title>
     </ion-card-content>
     <ion-row>
@@ -29,13 +29,6 @@
         <div>Lieux Proches</div>
       </button>
     </ion-col>
-    <!--
-    <ion-col center text-center>
-      <ion-note>
-        11h ago
-      </ion-note>
-    </ion-col>
-    -->
   </ion-row>
   </ion-card>
 
@@ -45,28 +38,39 @@
       Durée du trajet
     </ion-card-header>
     <ion-card-content>
-      
+      <h2>{{ trajet.duree_trajet.text }} </h2>
     </ion-card-content>
   </ion-card>
 
-  <!--Lieux proches -->
+  <!-- Distance -->
+  <ion-card>
+    <ion-card-header>
+      Distance à parcourir
+    </ion-card-header>
+    <ion-card-content>
+     <h2> {{ trajet.distance_trajet.text }} </h2>
+    </ion-card-content>
+  </ion-card>
+
+  <!--Lieux proches 
   <ion-list>
   
     <ion-item>
       Hotels à proximité
       <button ion-button outline item-end icon-left>
         <ion-icon name="star"></ion-icon>
-        Left Icon
+        Afficher
       </button>
     </ion-item>
     <ion-item>
       Resto proches
       <button ion-button outline item-end icon-left>
         <ion-icon name="star"></ion-icon>
-        Left Icon
+        Afficher
       </button>
     </ion-item>
    
 </ion-list>
+-->
 
 </ion-content>

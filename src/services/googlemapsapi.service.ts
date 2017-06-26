@@ -9,6 +9,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 @Injectable()
+
 export class GoogleMapsApiService {
 
     private baseURLDistanceMatrix: string = "https://maps.googleapis.com/maps/api/distancematrix/";
@@ -21,17 +22,17 @@ export class GoogleMapsApiService {
 
     /**
      * Lance une requête Distance Matrix
-     * @param origins Lieux d'origine
-     * @param destinations Lieux de destination
+     * @param origins Lieu(x) d'origine
+     * @param destinations Lieu(x) de destination
      * Renvoie un objet GoogleMapsApiGlobal 
      */
-    getDistanceMatrix(origins: IonicNativeGeolocation, destinations: GooglePlaceApiResult): Promise<GoogleMapsApiGlobal> {
+   public getDistanceMatrix(origins: IonicNativeGeolocation, destinations: GooglePlaceApiResult): Promise<GoogleMapsApiGlobal> {
         
         var mode :string = "driving";
         var language: string = "en";
         var origin: string = `origins=${origins.latitude},${origins.longitude}`;
-
-        const parameters = `${origin}&destinations=place_id:${destinations.placeid}&mode=${mode}&language=${language}&key=${this.apikey}`;
+        
+        const parameters = `${origin}&destinations=place_id:${destinations.place_id}&mode=${mode}&language=${language}&key=${this.apikey}`;
         const url: string = this.baseURLDistanceMatrix+this.output+parameters;
         
         return this.http.get(url)

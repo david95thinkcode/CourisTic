@@ -1,14 +1,19 @@
 import { Component }                           from '@angular/core';
-import { NavController }                       from 'ionic-angular';
+import { NavController, NavParams }                       from 'ionic-angular';
 
 //My imports
 import { GoogleMapsApiService }                from '../../services/googlemapsapi.service';
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
+
 import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi-global.model';
 import { GoogleMapsApiGlobal }                 from '../../models/googlemapsapi-global.model';
 import { GooglePlaceApiResult   }              from '../../models/googleplaceapi-result.model';
 import { GoogleMapsApiElement   }              from '../../models/googlemapsapi-element.model';
+import { GoogleMapsApiRow   }                  from '../../models/googlemapsapi-row.model';
 import { IonicNativeGeolocation }              from '../../models/ionicnative-geolocation.model';
+import { GoogleMapsApiDistance   }             from '../../models/googlemapsapi-distance.model';
+import { GoogleMapsApiDuration   }              from '../../models/googlemapsapi-duration.model';
+import { Trajet }                              from '../../models/trajet.model';
 
 @Component({
   selector: 'page-estimation',
@@ -18,74 +23,94 @@ import { IonicNativeGeolocation }              from '../../models/ionicnative-ge
 
 export class EstimationPage {
 
-  rows: GoogleMapsApiElement[];
+  trajet: Trajet = new Trajet();
+  rows: GoogleMapsApiRow[];
   reponse: GoogleMapsApiGlobal = new GoogleMapsApiGlobal();
-  userPosition: IonicNativeGeolocation = new IonicNativeGeolocation();
-  userDestiation: GooglePlaceApiResult = new GooglePlaceApiResult();
-  nombreHotels_proche: number;
-  nombreRestaurant_proche: number;
-  duree_trajet: string;
-  cout_hebergement: number;
-  cout_restauration: number;
-  cout_transport: number;
 
-/**
- *  
- * @param navCtrl 
- * @param currentLocation Objet IonicNativeGeolocation représentatn la position GPS du téléphone
- * @param destination Objet GooglePlaceApiResult repréentant le Lieu de destination
- */
- 
-  constructor(public navCtrl: NavController, public googleMapsApiService: GoogleMapsApiService, public currentLocation:IonicNativeGeolocation, public destination: GooglePlaceApiResult ) {
-    /*
-    this.Initialise();
-    
-    console.log("Position actuelle recu est:" + this.currentLocation.longitude + ", "+this.currentLocation.latitude);
-    
-    this.googleMapsApiService.getDistanceMatrix(currentLocation, destination)
-    .then(fetched =>
-    {
-      this.reponse = fetched;
-      this.rows = this.reponse.rows;
-    })
-    .catch(error => console.log('getDistanceMatrix() error :: ' + error));
-*/
-/*
-    console.log("Chargement des Hotels en cours ...");
-    //Recupère les hotels proches
+ constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public googleMapsApiService: GoogleMapsApiService, public navParams: NavParams)
+ {
+   this.trajet.userDestination = navParams.get('userChoice');
+   this.trajet.userPosition = navParams.get('currentLocation');
+   this.Initialise();
+   this.setDistanceDuration();
+ }
 
-    console.log("Chargement des hotels terminé !");
-  
-    console.log("Chargement des restaurants en cours ...");
-    //Recupère les restaurants proches
-
-    console.log("Chargement des restaurants terminé !");
-    */
-  }
 
   private Initialise() {
 
-    this.cout_hebergement = 0;
-    this.cout_restauration = 0;
-    this.cout_transport = 0;
-    this.duree_trajet = "Indéterminé";
-    this.nombreHotels_proche = 0;
-    this.nombreRestaurant_proche = 0;
-    this.userPosition = this.currentLocation;
-    this.userDestiation = this.destination;
+    this.trajet.cout_hebergement = 0;
+    this.trajet.cout_restauration = 0;
+    this.trajet.cout_transport = 0;    
+    this.trajet.nombreHotels_proche = 0;
+    this.trajet.nombreRestaurant_proche = 0;
+    this.trajet.distance_trajet = new GoogleMapsApiDistance();
+    this.trajet.duree_trajet = new GoogleMapsApiDuration();
+    this.trajet.duree_trajet.text = "Indéterminé";
+    this.trajet.distance_trajet.text = "Indéterminé";   
     
   }
 
-/** RENVOIE LE COUT ESTIME DU TRAJET
- * le cout renvoyé est composé de :
- * - cout de transport
- * - cout d'hébergement
- * - cout de restauration
- */
-  private getGlobalPrice() {
+  /** EFFECTUE DES OPERATIONS POUR ATTRIBUER LA DUREE ET LA DISTANCE
+   *  A NOTRE OBJET "trajet"
+   *  On lance la requête de recherche d'itinéraire
+   *  On vérifie d'abords si un itinéraire a été trouvé
+   *  S'il n'a pas été trouvé, on envoie un message a l'utilisateur
+   *  S'il a été trouvé contraire, on met à jour l'objet trajet
+  */
+  private setDistanceDuration() {
+
+    //Destination présente (non null et bien reçue dans le constructeur)
+    if (this.trajet.userDestination == null)
+    {
+      console.log("DestinationPage : Destination non reçue");
+    }
+    //Destination absente
+    else 
+    {      
+      this.googleMapsApiService.getDistanceMatrix(this.trajet.userPosition, this.trajet.userDestination)
+      .then(fetched =>
+      {
+        this.reponse = fetched;
+        this.rows = this.reponse.rows;
+        
+        console.log(this.rows);
+        console.log(this.rows[0].elements[0]);
+
+        //TODO : Enlever les marqueur de commentaire pour la condition ci-dessous
+        //Aucun itinéraire n'a été trouvé 
+        //if ( this.rows[0].elements[0].status == "ZERO_RESULTS") {
+
+        //}
+        //ITINERAIRE TROUVE
+        //else 
+        {
+          //Récupération et affectation des données "distance" et "durée" au trajet
+          this.trajet.distance_trajet = this.rows[0].elements[0].distance;
+          this.trajet.duree_trajet = this.rows[0].elements[0].duration;
+        }
+       /* //OBSERVATION 
+        console.log(this.rows);
+        console.log(this.rows[0]);
+        console.log(this.rows[0].elements);
+        console.log(this.rows[0].elements[0]);
+        console.log(this.rows[0].elements[0].distance);
+        console.log(this.rows[0].elements[0].distance.text);
+        console.log("Destination : "+ this.trajet.userDestination);
+        */
+      })
+      .catch(error => console.log('getDistanceMatrix() error :: ' + error));
+    }
 
   }
 
+  /** RENVOIE LE COUT ESTIME DU TRAJET
+   * le cout renvoyé est composé de :
+   * - cout de transport
+   * - cout d'hébergement
+   * - cout de restauration
+   */
+  private getGlobalPrice() {
 
+  }
 
 }
