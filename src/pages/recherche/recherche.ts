@@ -69,7 +69,7 @@ export class RecherchePage {
             result.reference_to_main_Image = result.photos[secureIndexForPhoto].photo_reference;
             result.url_to_main_Image = this.googlePlaceApiService.getPhotoURL(result.reference_to_main_Image);
           }
-          
+         
         });
                 
       });
@@ -78,19 +78,28 @@ export class RecherchePage {
 
   }
 
-/** Ouvre la page d'estimation de l'application
- * et lui envoie les paramètres nécessaires qui sont :
- * la lieu choisi par l'utilisateur
- * la position actuelle du téléphone (ou de l'utiliateur)
- */
+  /** Ouvre la page d'estimation de l'application
+   * et lui envoie les paramètres nécessaires qui sont :
+   * la lieu choisi par l'utilisateur
+   * la position actuelle du téléphone (ou de l'utiliateur)
+  */
   public showEstimation(choice : GooglePlaceApiResult) {
-    //Valeur de test
-    this.currentLocation.latitude = 6.415745100000001;
-    this.currentLocation.longitude = 2.3413236;
+    
+    //Destination valide ???
+    if (choice == null){
+      console.log("Destination choisie null");
+    }
 
-    this.navCtrl.push(EstimationPage, {
-      currentLocation: this.currentLocation,
-      userChoice: choice
-    })
+    else {
+      this.currentLocation.latitude = 6.415745100000001;
+      this.currentLocation.longitude = 2.3413236;
+
+      this.navCtrl.push(EstimationPage, {
+        currentLocation: this.currentLocation,
+        userChoice: choice
+      });
+
+    }    
+    
   } 
 }
