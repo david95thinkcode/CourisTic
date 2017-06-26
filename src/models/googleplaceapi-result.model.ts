@@ -19,7 +19,7 @@ export class GooglePlaceApiResult {
         
     icon: string;
     scope: string;
-    placeid: string;
+    place_id: string;
     rating: number; 
     price_level: number; 
 
