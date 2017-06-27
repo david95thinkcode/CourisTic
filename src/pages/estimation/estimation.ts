@@ -38,6 +38,7 @@ export class EstimationPage {
 
   private Initialise() {
 
+    this.trajet.itineraire = false;
     this.trajet.cout_hebergement = 0;
     this.trajet.cout_restauration = 0;
     this.trajet.cout_transport = 0;    
@@ -73,17 +74,16 @@ export class EstimationPage {
         this.reponse = fetched;
         this.rows = this.reponse.rows;
         
-        console.log(this.rows);
-        console.log(this.rows[0].elements[0]);
-
-        //TODO : Enlever les marqueur de commentaire pour la condition ci-dessous
         //Aucun itinéraire n'a été trouvé 
-        //if ( this.rows[0].elements[0].status == "ZERO_RESULTS") {
-
-        //}
-        //ITINERAIRE TROUVE
-        //else 
+        if ( this.rows[0].elements[0].status == "ZERO_RESULTS") {
+          this.trajet.itineraire = false ;
+          this.trajet.distance_trajet.text = "Nous ne nouveau pas vous fournir d'information sur cet itinéraire";
+        }
+        //Itinéraire trouvé
+        else 
         {
+          this.trajet.itineraire = true;
+          
           //Récupération et affectation des données "distance" et "durée" au trajet
           this.trajet.distance_trajet = this.rows[0].elements[0].distance;
           this.trajet.duree_trajet = this.rows[0].elements[0].duration;

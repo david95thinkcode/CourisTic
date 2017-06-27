@@ -7,51 +7,61 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>  </h3>
-  <ion-card>
-    <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
-    <ion-card-content>
-      <ion-card-title>
-        Pour aller à {{ trajet.userDestination.name }}
-      </ion-card-title>
-    </ion-card-content>
-    <ion-row>
-    <ion-col>
-      <button ion-button icon-left clear small>
-        <ion-icon name="heart"></ion-icon>
-        <div>Favoris</div>
-      </button>
-    </ion-col>
-    <ion-col>
-      <button ion-button icon-left clear small>
-        <ion-icon name="flag"></ion-icon>
-        <div>Lieux Proches</div>
-      </button>
-    </ion-col>
-  </ion-row>
-  </ion-card>
+<ion-content>
+  
+  <div class="trajet-true" *ngIf="trajet.itineraire; else introuvable">
+    <h3>  </h3>
+    <ion-card>
+      <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
+      <ion-card-content>
+        <ion-card-title>
+          Pour aller à {{ trajet.userDestination.name }}
+        </ion-card-title>
+      </ion-card-content>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="heart"></ion-icon>
+            <div>Favoris</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="flag"></ion-icon>
+            <div>Lieux Proches</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
 
-  <!-- Durée trajet -->
-  <ion-card>
-    <ion-card-header>
-      Durée du trajet
-    </ion-card-header>
-    <ion-card-content>
-      <h2>{{ trajet.duree_trajet.text }} </h2>
-    </ion-card-content>
-  </ion-card>
+    <!-- Durée trajet -->
+    <ion-card>
+      <ion-card-header>
+        Durée du trajet
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{ trajet.duree_trajet.text }} </h2>
+      </ion-card-content>
+    </ion-card>
 
-  <!-- Distance -->
-  <ion-card>
-    <ion-card-header>
-      Distance à parcourir
-    </ion-card-header>
-    <ion-card-content>
-     <h2> {{ trajet.distance_trajet.text }} </h2>
-    </ion-card-content>
-  </ion-card>
+    <!-- Distance -->
+    <ion-card>
+      <ion-card-header>
+        Distance à parcourir
+      </ion-card-header>
+      <ion-card-content>
+      <h2> {{ trajet.distance_trajet.text }} </h2>
+      </ion-card-content>
+    </ion-card>
 
+  </div>
+
+  <ng-template #introuvable>
+    <div class="trajet-false">
+      <h1>Itinéraire introuvable !</h1>
+    </div>
+  </ng-template>
+  
   <!--Lieux proches 
   <ion-list>
   
