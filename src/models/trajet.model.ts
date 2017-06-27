@@ -11,6 +11,7 @@ export class Trajet
   cout_hebergement: number;
   cout_restauration: number;
   cout_transport: number;
+  itineraire: boolean; //A true si l'itinéraire pour ce trajet a été trouvé
 
   duree_trajet: GoogleMapsApiDuration;
   distance_trajet: GoogleMapsApiDistance;
