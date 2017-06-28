@@ -1,7 +1,6 @@
 import { Component }                           from '@angular/core';
-import { NavController, NavParams }                       from 'ionic-angular';
+import { NavController, NavParams }            from 'ionic-angular';
 
-//My imports
 import { GoogleMapsApiService }                from '../../services/googlemapsapi.service';
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
 
@@ -26,6 +25,7 @@ import { Restaurant }                          from '../../models/app/restaurant
 
 export class EstimationPage {
 
+  cout_trajet: number;
   nombreHotel: number;
   nombreRestaurant: number;
   trajet: Trajet = new Trajet();
@@ -41,6 +41,9 @@ export class EstimationPage {
    this.Initialise();
    this.setDistanceDuration();
    this.countNearbyPlaces();
+   this.getGlobalPrice();
+   //console.log(this.array_Hotel);
+   //console.log(this.array_restaurant);
  }
 
 
@@ -58,10 +61,9 @@ export class EstimationPage {
     this.trajet.distance_trajet.text = "Indéterminé";   
     this.nombreHotel = 0;
     this.nombreRestaurant = 0;
-    
-    //TODO/ initialiser les deux tableau ci-dessous
-    //this.array_Hotel = 
-    //this.array_restaurant = 
+    this.array_Hotel = [];
+    this.array_restaurant = []; 
+    this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
   }
 
   /** EFFECTUE DES OPERATIONS POUR ATTRIBUER LA DUREE ET LA DISTANCE
@@ -115,9 +117,55 @@ export class EstimationPage {
 
   }
 
-  
-  /** Compte les lieux a proximité de la destination et informe 
-   * les variable nombreHotels et nombreRestaurant*/
+  private populateHotelArray() {
+    var response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
+    var results: GooglePlaceApiResult[];
+
+    this.googlePlaceApiService.getNearbyHostels(this.trajet.userDestination, 0)
+    .then(fetched => 
+    {
+      response = fetched;      
+      results = response.results;
+
+      results.forEach(result => {
+        //On insère un hotel dans le tableau d'hotels
+        var un_hotel = new Hotel();
+        un_hotel.googleDetails = result;
+        un_hotel.designation = un_hotel.googleDetails.name;
+
+        this.array_Hotel.push(un_hotel);        
+        this.nombreHotel ++;
+      });
+      
+    })
+    .catch(error => console.log('countNearbyPlaces() error : ' + error));
+    
+  }
+
+  private populateRestaurantArray() {
+    var response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
+    var results: GooglePlaceApiResult[];
+
+    this.googlePlaceApiService.getNearbyRestaurants(this.trajet.userDestination, 0)
+    .then(fetched => 
+    {
+      response = fetched;      
+      results = response.results;
+      results.forEach(result => {
+        //On insère un restaurant dans le tableau de restaurants
+        var un_resto = new Restaurant();
+        un_resto.googleDetails = result;
+        un_resto.designation = un_resto.googleDetails.name;
+
+        this.array_restaurant.push(un_resto);
+        this.nombreRestaurant ++;
+      });
+    })
+    .catch(error => console.log('countNearbyPlaces() error : ' + error));
+
+  }
+
+  /** Compte les lieux a proximité de la destination */
   private countNearbyPlaces() {
 
     var response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
@@ -131,54 +179,19 @@ export class EstimationPage {
       response = fetched;      
       results = response.results;
       
-      //ON COMPTE LE NOMBRE
+      //ON COMPTE LE NOMBRE TOTAL TROUVE
       results.forEach(result => {
         totalplaces ++;
       });
 
       //Observations
-      console.log("Nombre total : " + totalplaces);
       console.log(results);
       
     })
     .catch(error => console.log('countNearbyPlaces() error : ' + error));
-
-    //Hotels 
-    this.googlePlaceApiService.getNearbyHostels(this.trajet.userDestination, 0)
-    .then(fetched => 
-    {
-      response = fetched;      
-      results = response.results;
-      results.forEach(result => {
-        //On insère un hotel dans le tableau d'hotels
-        var un_hotel = new Hotel();
-        un_hotel.googleDetails = result;
-        //this.array_Hotel.push(un_hotel);
-
-        this.nombreHotel ++;
-        console.log("Hotel : " + this.nombreHotel);
-      });
-      
-    })
-    .catch(error => console.log('countNearbyPlaces() error : ' + error));
     
-    //Restaurants
-    this.googlePlaceApiService.getNearbyRestaurants(this.trajet.userDestination, 0)
-    .then(fetched => 
-    {
-      response = fetched;      
-      results = response.results;
-      results.forEach(result => {
-        //On insère un restaurant dans le tableau de restaurants
-        var un_resto = new Restaurant();
-        un_resto.googleDetails = result;
-        //this.array_restaurant.push(un_resto);
-
-        this.nombreRestaurant ++;
-      });
-    })
-    .catch(error => console.log('countNearbyPlaces() error : ' + error));
-
+    this.populateHotelArray();
+    this.populateRestaurantArray();
   }
 
   /** RENVOIE LE COUT ESTIME DU TRAJET
@@ -188,7 +201,7 @@ export class EstimationPage {
    * - cout de restauration
    */
   private getGlobalPrice() {
-    
+    this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
   }
 
   //TODO: implémenter la méthode
@@ -199,6 +212,13 @@ export class EstimationPage {
   //TODO: implémenter la méthode
   public showHotels() {
 
+  }
+
+  
+  public addToFavorites(favoritePlace: GooglePlaceApiResult)
+  {
+    //TODO: enregistrer le favoris dans la base de données
+    console.log(favoritePlace.name + " ajouté aux favoris");
   }
 
 

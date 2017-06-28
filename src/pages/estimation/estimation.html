@@ -5,56 +5,144 @@
     </button>
     <ion-title>Estimation</ion-title>
   </ion-navbar>
+  <!-- MENU EN HAUT -->
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="description">
+        Description
+      </ion-segment-button>
+      <ion-segment-button value="estimation">
+        Estimation
+      </ion-segment-button>
+      <ion-segment-button value="details">
+        Détails
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   
   <div class="trajet-true" *ngIf="trajet.itineraire; else introuvable">
-    <h3>  </h3>
-    <ion-card>
-      <!--
-      <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
-      -->
-      <ion-card-content>
-        <ion-card-title>
-          Pour aller à {{ trajet.userDestination.name }}
-        </ion-card-title>
-      </ion-card-content>
-      <ion-row>
-        <ion-col>
-          <button ion-button icon-left clear small>
-            <ion-icon name="heart"></ion-icon>
-            <div>Favoris</div>
-          </button>
-        </ion-col>
-        <ion-col>
-          <button ion-button icon-left clear small>
-            <ion-icon name="flag"></ion-icon>
-            <div>Lieux Proches</div>
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-card>
+    
+    <div [ngSwitch]="pet">
+      <ion-list *ngSwitchCase="'description'">
+        <ion-card>
+          <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
+        <ion-card-content>
+          {{trajet.userDestination.name}} est une ville historique qui ...
+          {{ trajet.userDestination.description }}
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-left clear small (tap)="addToFavorites(trajet.userDestination)">
+              <ion-icon name="heart"></ion-icon>
+              <div>Favoris</div>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      </ion-list>
 
-    <!-- Durée trajet -->
-    <ion-card>
-      <ion-card-header>
-        Durée du trajet
-      </ion-card-header>
-      <ion-card-content>
-        <h2>{{ trajet.duree_trajet.text }} </h2>
-      </ion-card-content>
-    </ion-card>
+      <ion-list *ngSwitchCase="'estimation'">
+      <ion-card>
+        <!--
+        <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
+        -->
+        <ion-card-content>
+          <ion-card-title>
+            Pour aller à {{ trajet.userDestination.name }}, prévoyez <br>
+            {{ cout_trajet }}
+          </ion-card-title>
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-left clear small (tap)="addToFavorites(trajet.userDestination)">
+              <ion-icon name="heart"></ion-icon>
+              <div>Favoris</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-left clear small>
+              <ion-icon name="flag"></ion-icon>
+              <div>Lieux Proches</div>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
 
-    <!-- Distance -->
-    <ion-card>
-      <ion-card-header>
-        Distance à parcourir
-      </ion-card-header>
-      <ion-card-content>
-      <h2> {{ trajet.distance_trajet.text }} </h2>
-      </ion-card-content>
-    </ion-card>
+      <!-- Durée trajet -->
+      <ion-card>
+        <ion-card-header>
+          Durée du trajet
+        </ion-card-header>
+        <ion-card-content>
+          <h2>{{ trajet.duree_trajet.text }} </h2>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Distance -->
+      <ion-card>
+        <ion-card-header>
+          Distance à parcourir
+        </ion-card-header>
+        <ion-card-content>
+        <h2> {{ trajet.distance_trajet.text }} </h2>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Lieux proches -->
+      Lieux proches 
+      <ion-list>    
+        <ion-item>
+          Hotels à proximité  {{ nombreHotel }}
+          <button ion-button outline item-end icon-left>
+            <ion-icon name="star"></ion-icon>
+            Afficher
+          </button>
+        </ion-item>
+        <ion-item>
+          Resto proches <strong> {{ nombreRestaurant }} </strong>
+          <button ion-button outline item-end icon-left>
+            <ion-icon name="star"></ion-icon>
+            Afficher
+          </button>
+        </ion-item>      
+      </ion-list>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'details'">
+        <ion-list>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>Hébergement </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-6> {{ trajet.cout_hebergement }}</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>Restauration </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-6> {{ trajet.cout_restauration }}</ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>Transport </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-6> {{ trajet.cout_transport }}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-list>
+        
+      </ion-list>
+
+      
+    </div>   
 
   </div>
 
@@ -64,25 +152,4 @@
     </div>
   </ng-template>
   
-  Lieux proches 
-  <ion-list>
-    
-    <ion-item>
-      Hotels à proximité  {{ nombreHotel }}
-      <button ion-button outline item-end icon-left>
-        <ion-icon name="star"></ion-icon>
-        Afficher
-      </button>
-    </ion-item>
-    <ion-item>
-      Resto proches <strong> {{ nombreRestaurant }} </strong>
-      <button ion-button outline item-end icon-left>
-        <ion-icon name="star"></ion-icon>
-        Afficher
-      </button>
-    </ion-item>
-   
-</ion-list>
-
-
 </ion-content>
