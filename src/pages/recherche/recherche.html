@@ -22,9 +22,18 @@
   -->
 
   </ion-list>
-  <ion-card *ngFor="let result of response.results">
+  <div *ngIf="response; else connexionFailed">
+  <ion-card *ngFor="let result of response.results" >
+   
+    <!-- Pour économiser la bande passande, ceci sera mis en commentaire pendant le dév
     <img [src]="result.url_to_main_Image"/>
+    -->
     <ion-card-content>
+      <ion-fab right>
+        <button ion-fab (tap)="showEstimation(result)">
+          <ion-icon name="pin"></ion-icon>
+        </button>
+      </ion-fab>
       <ion-card-title>
         {{ result.name }}
       </ion-card-title>
@@ -52,5 +61,9 @@
   </ion-row>
   
   </ion-card>
+  </div>
+  <ng-template #connexionFailed>
+    <h3>Pas de connexion Internet</h3>
+  </ng-template>
 
 </ion-content>

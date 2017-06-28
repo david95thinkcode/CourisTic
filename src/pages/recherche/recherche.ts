@@ -54,7 +54,8 @@ export class RecherchePage {
          * On définit l'index de l'image principale de notre lieu
          * On récupère l'url de l'image principale
          */
-        this.results.forEach(result => {
+        this.results.forEach(result => 
+        {
           const secureIndexForPhoto: number = 0;
           
           //Cas ou l'image nexiste pas (photos[] = null ==> est vide)

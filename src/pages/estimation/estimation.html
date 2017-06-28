@@ -12,7 +12,9 @@
   <div class="trajet-true" *ngIf="trajet.itineraire; else introuvable">
     <h3>  </h3>
     <ion-card>
+      <!--
       <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
+      -->
       <ion-card-content>
         <ion-card-title>
           Pour aller à {{ trajet.userDestination.name }}
@@ -62,18 +64,18 @@
     </div>
   </ng-template>
   
-  <!--Lieux proches 
+  Lieux proches 
   <ion-list>
-  
+    
     <ion-item>
-      Hotels à proximité
+      Hotels à proximité  {{ nombreHotel }}
       <button ion-button outline item-end icon-left>
         <ion-icon name="star"></ion-icon>
         Afficher
       </button>
     </ion-item>
     <ion-item>
-      Resto proches
+      Resto proches <strong> {{ nombreRestaurant }} </strong>
       <button ion-button outline item-end icon-left>
         <ion-icon name="star"></ion-icon>
         Afficher
@@ -81,6 +83,6 @@
     </ion-item>
    
 </ion-list>
--->
+
 
 </ion-content>
