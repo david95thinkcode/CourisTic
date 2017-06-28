@@ -21,6 +21,7 @@ export class GooglePlaceApiService {
 
     private output: string = 'json?';
     private apikey: string = "AIzaSyCLO_avsG1-B2kj5-FDfdE3CMguE2RESiY";
+    private radiusParDefaut = 50000;
 
     constructor (private http: Http) {
         
@@ -87,8 +88,8 @@ export class GooglePlaceApiService {
        //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
        
        //Un radius par défaut
-       if(radius == 0 || radius==null) {
-            radius = 5000;
+       if(radius == 0 || radius == null) {
+            radius = this.radiusParDefaut;
        }
 
         const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&key=${this.apikey}`;
@@ -105,11 +106,11 @@ export class GooglePlaceApiService {
  * @param radius Distance en mètres délimitant la zone de recherche
  */
     public getNearbyHostels(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
-       const type: string = "hostel";
+       const type: string = "lodging";
 
        //Un radius par défaut
        if(radius == 0 || radius==null) {
-            radius = 5000;
+            radius = this.radiusParDefaut;
        }
 
         const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&type=${type}&key=${this.apikey}`;
@@ -130,7 +131,7 @@ export class GooglePlaceApiService {
 
        //Un radius par défaut
        if(radius == 0 || radius==null) {
-            radius = 5000;
+            radius = this.radiusParDefaut;
        }
 
         const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&type=${type}&key=${this.apikey}`;
@@ -140,7 +141,8 @@ export class GooglePlaceApiService {
         .toPromise()
         .then(response => response.json() as GooglePlaceApiPlaceSearchResult)
         .catch(error => console.log('Une erreur est survenue dans le service ' + error))
-    }
+    
+}
     
     /**Retourne l'URL d'une photo dont la référence a été passé en paramètre
      * Learn more on : https://developers.google.com/places/web-service/photos
