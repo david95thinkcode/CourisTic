@@ -27,9 +27,15 @@
   </ion-list>
 
   <ion-card>
-    <!--<img [src]="picture_url"/>-->
+    <!-- <img [src]="picture_url" (tap)="showEstimation(result)"/> -->
     <div class="card-title" *ngIf="result">{{ result.name }}</div>
     <!-- <div class="card-subtitle">41 Listings</div> -->
   </ion-card>
 
+  <!--Bouton flottant -->
+  <ion-fab right bottom>
+    <button ion-fab>
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { RecherchePage  } from '../../pages/recherche/recherche';
-
+import { Component }                from '@angular/core';
+import { NavController }            from 'ionic-angular';
+import { RecherchePage  }           from '../../pages/recherche/recherche';
+import { EstimationPage  }          from '../../pages/estimation/estimation';
 import { GooglePlaceApiService }    from '../../services/googleplaceapi.service';
 import { GooglePlaceApiGlobal }     from '../../models/googleplaceapi-global.model';
 import { GooglePlaceApiResult   }   from '../../models/googleplaceapi-result.model';
+import { IonicNativeGeolocation }   from '../../models/ionicnative-geolocation.model';
 
 @Component({
   selector: 'page-home',
@@ -12,7 +13,7 @@ import { GooglePlaceApiResult   }   from '../../models/googleplaceapi-result.mod
 })
 
 export class HomePage {
-
+  currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
   mainImageIndex: number = 1;
   
   detail: GooglePlaceApiGlobal = new GooglePlaceApiGlobal();
@@ -23,7 +24,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService)
   {
-      this.place_to_search = "Akpakpa";
+      this.place_to_search = "Abomey";
       this.Initialise();
  
   }
@@ -57,4 +58,24 @@ export class HomePage {
       query: this.place_to_search
     });
   }
+
+  public showEstimation(choice : GooglePlaceApiResult) {
+    
+    //Destination valide ???
+    if (choice == null){
+      console.log("Destination choisie null");
+    }
+
+    else {
+      this.currentLocation.latitude = 6.415745100000001;
+      this.currentLocation.longitude = 2.3413236;
+
+      this.navCtrl.push(EstimationPage, {
+        currentLocation: this.currentLocation,
+        userChoice: choice
+      });
+
+    }    
+    
+  } 
 }
