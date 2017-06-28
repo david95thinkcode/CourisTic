@@ -1,9 +1,13 @@
-import { GooglePlaceApiResult   }              from '../googleplaceapi-result.model';
+import { Point   }              from '../app/point.model';
 
-//TODO: faire de la classe Pays un fils de la classe Point
-export class Pays
+export class Pays extends Point
 {
     id: string;
     libelle: string;
-    googleDetails: GooglePlaceApiResult;
+    
+    constructor() {
+        
+        super();
+
+    }
 }

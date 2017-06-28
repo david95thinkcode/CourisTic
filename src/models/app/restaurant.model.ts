@@ -1,8 +1,13 @@
-import { GooglePlaceApiResult   }              from './googleplaceapi-result.model';
+import { Point   }              from '../app/point.model';
 
-export class Restaurant {
+export class Restaurant extends Point 
+{
     id: string;
-    raison_sociale: string;
     cout_minimum_plat: number;
-    googleDetails: GooglePlaceApiResult;
+    
+    constructor() {
+        
+        super();
+
+    }
 }
