@@ -14,9 +14,9 @@ import { GoogleMapsApiRow   }                  from '../../models/googlemapsapi-
 import { IonicNativeGeolocation }              from '../../models/ionicnative-geolocation.model';
 import { GoogleMapsApiDistance   }             from '../../models/googlemapsapi-distance.model';
 import { GoogleMapsApiDuration   }             from '../../models/googlemapsapi-duration.model';
-import { Trajet }                              from '../../models/trajet.model';
-import { Hotel }                               from '../../models/hotel.model';
-import { Restaurant }                          from '../../models/restaurant.model';
+import { Trajet }                              from '../../models/app/trajet.model';
+import { Hotel }                               from '../../models/app/hotel.model';
+import { Restaurant }                          from '../../models/app/restaurant.model';
 
 @Component({
   selector: 'page-estimation',
