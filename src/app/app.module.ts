@@ -12,6 +12,7 @@ import { TrajetsEnregistresPage }     from '../pages/trajetsenregistres/trajetse
 import { EstimationPage }             from '../pages/estimation/estimation';
 import { AidePage }                   from '../pages/aide/aide';
 import { RecherchePage }              from '../pages/recherche/recherche';
+import { ListeLieuxProchesPage  }     from '../pages/listelieuxproches/listelieuxproches';
 
 //Ionic native
 import { StatusBar }                  from '@ionic-native/status-bar';
@@ -32,7 +33,8 @@ import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
     TrajetsEnregistresPage,
     EstimationPage,
     AidePage,
-    RecherchePage
+    RecherchePage,
+    ListeLieuxProchesPage
   ],
   imports: [
     HttpModule,
@@ -49,7 +51,8 @@ import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
     TrajetsEnregistresPage,
     EstimationPage,
     AidePage,
-    RecherchePage
+    RecherchePage,
+    ListeLieuxProchesPage
   ],
   providers: [
     GooglePlaceApiService,

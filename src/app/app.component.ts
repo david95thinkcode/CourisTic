@@ -12,6 +12,7 @@ import { TrajetsEnregistresPage }       from '../pages/trajetsenregistres/trajet
 import { AidePage }                     from '../pages/aide/aide';
 import { RecherchePage }                from '../pages/recherche/recherche';
 import { EstimationPage }               from '../pages/estimation/estimation';
+import { ListeLieuxProchesPage  }       from '../pages/listelieuxproches/listelieuxproches';
 
 @Component({
   templateUrl: 'app.html'
@@ -29,9 +30,9 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
+      { title: 'Accueil', component: HomePage },
       { title: 'List', component: ListPage },
-      { title: 'Liste des hôtels', component: ListehotelsPage },
+      { title: 'Sites touristiques', component: ListehotelsPage },
       { title: 'Lieux favoris', component: FavorisPage },
       { title: 'Trajets enregistrés', component: TrajetsEnregistresPage },
       { title: 'Aide', component: AidePage }
