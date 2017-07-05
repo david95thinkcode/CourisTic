@@ -8,7 +8,6 @@ import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi
 import { GooglePlaceApiResult   }              from '../../models/googleplaceapi-result.model';
 import { GooglePlaceApiPhoto   }               from '../../models/googleplaceapi-photo.model';
 import { GooglePlaceApiPlaceSearchResult   }   from '../../models/googleplaceapi-placesearchresult.model';
-import { IonicNativeGeolocation }              from '../../models/ionicnative-geolocation.model';
 
 @Component({
   selector: 'page-recherche',
@@ -17,7 +16,6 @@ import { IonicNativeGeolocation }              from '../../models/ionicnative-ge
 
 export class RecherchePage {
   
-  currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
   response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
   result: GooglePlaceApiResult = new GooglePlaceApiResult();
   results: GooglePlaceApiResult[];
@@ -91,12 +89,8 @@ export class RecherchePage {
       console.log("Destination choisie null");
     }
 
-    else {
-      this.currentLocation.latitude = 6.415745100000001;
-      this.currentLocation.longitude = 2.3413236;
-
+    else {          
       this.navCtrl.push(EstimationPage, {
-        currentLocation: this.currentLocation,
         userChoice: choice
       });
 

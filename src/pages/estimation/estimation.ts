@@ -1,8 +1,11 @@
 import { Component }                           from '@angular/core';
 import { NavController, NavParams }            from 'ionic-angular';
 
+import { ListeLieuxProchesPage  }              from '../../pages/listelieuxproches/listelieuxproches';
+
 import { GoogleMapsApiService }                from '../../services/googlemapsapi.service';
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
+import { IonicNativeService }                  from '../../services/ionicnative.service';
 
 import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi-global.model';
 import { GoogleMapsApiGlobal }                 from '../../models/googlemapsapi-global.model';
@@ -34,10 +37,9 @@ export class EstimationPage {
   array_Hotel: Array<Hotel>;
   array_restaurant: Array<Restaurant>;
   
- constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public googleMapsApiService: GoogleMapsApiService, public navParams: NavParams)
+ constructor(private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams)
  {
    this.trajet.userDestination = navParams.get('userChoice');
-   this.trajet.userPosition = navParams.get('currentLocation');
    this.Initialise();
    this.setDistanceDuration();
    this.countNearbyPlaces();
@@ -55,6 +57,7 @@ export class EstimationPage {
     this.trajet.cout_transport = 0;    
     this.trajet.nombreHotels_proche = 0;
     this.trajet.nombreRestaurant_proche = 0;
+    this.trajet.userPosition = new IonicNativeGeolocation();
     this.trajet.distance_trajet = new GoogleMapsApiDistance();
     this.trajet.duree_trajet = new GoogleMapsApiDuration();
     this.trajet.duree_trajet.text = "Indéterminé";
@@ -75,11 +78,17 @@ export class EstimationPage {
   */
   private setDistanceDuration() {
 
-    //Destination présente (non null et bien reçue dans le constructeur)
-    if (this.trajet.userDestination == null)
-    {
-      console.log("DestinationPage : Destination non reçue");
+    this.getCurrentLocation();
+
+    if(this.trajet.userPosition == null) {
+      console.log("EstimationPage : Origine non reçue");
+      console.log(this.trajet.userPosition);
     }
+    //Destination présente (non null et bien reçue dans le constructeur)
+    else if (this.trajet.userDestination == null)
+    {
+      console.log("EstimationPage : Destination non reçue");
+    } 
     //Destination absente
     else 
     { 
@@ -173,7 +182,7 @@ export class EstimationPage {
     var totalplaces : number = 0;
 
     //récuperer tous les lieux proches    
-    this.googlePlaceApiService.getNearbySearchPlaces(this.trajet.userDestination, 50000)
+    this.googlePlaceApiService.getNearbySearchPlaces(this.trajet.userDestination, 0)
     .then(fetched => 
     {
       response = fetched;      
@@ -204,14 +213,18 @@ export class EstimationPage {
     this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
   }
 
-  //TODO: implémenter la méthode
   public showRestaurant(){
-
+    this.navCtrl.push(ListeLieuxProchesPage, {
+      array: this.array_restaurant,
+      title: "Restaurants"
+    });
   }
 
-  //TODO: implémenter la méthode
   public showHotels() {
-
+    this.navCtrl.push(ListeLieuxProchesPage, {
+      array: this.array_Hotel,
+      title: "Hotels"
+    });
   }
 
   
@@ -221,6 +234,9 @@ export class EstimationPage {
     console.log(favoritePlace.name + " ajouté aux favoris");
   }
 
+  private getCurrentLocation() {
+    this.ionicNativeService.loadCurrentLocationOn(this.trajet.userPosition);
+  }
 
 
 }

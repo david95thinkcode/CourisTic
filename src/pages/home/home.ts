@@ -3,9 +3,16 @@ import { NavController }            from 'ionic-angular';
 import { RecherchePage  }           from '../../pages/recherche/recherche';
 import { EstimationPage  }          from '../../pages/estimation/estimation';
 import { GooglePlaceApiService }    from '../../services/googleplaceapi.service';
+import { IonicNativeService }       from '../../services/ionicnative.service';
 import { GooglePlaceApiGlobal }     from '../../models/googleplaceapi-global.model';
 import { GooglePlaceApiResult   }   from '../../models/googleplaceapi-result.model';
 import { IonicNativeGeolocation }   from '../../models/ionicnative-geolocation.model';
+
+import { Geolocation }              from    '@ionic-native/geolocation';
+
+//RxJS
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'page-home',
@@ -13,27 +20,33 @@ import { IonicNativeGeolocation }   from '../../models/ionicnative-geolocation.m
 })
 
 export class HomePage {
+
   currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
-  mainImageIndex: number = 1;
-  
+  mainImageIndex: number = 1;  
   detail: GooglePlaceApiGlobal = new GooglePlaceApiGlobal();
   result: GooglePlaceApiResult = new GooglePlaceApiResult();
-  
   picture_url: string;
   place_to_search: string;
 
-  constructor(public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService)
+  constructor(public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
   {
-      this.place_to_search = "Abomey";
+      this.place_to_search = "uac";
       this.Initialise();
- 
+      this.getCurrentPosition();
+      //console.log(this.currentLocation);
+  }
+
+  public getCurrentPosition() {
+        
+    this.ionicNativeService.loadCurrentLocationOn(this.currentLocation);
+
   }
 
 /**
  * Initialise toutes les variables de la page
- */
+*/
   private Initialise() {
-    
+
     this.googlePlaceApiService.getDetails("")
     .then(lesdetails => 
     {
@@ -67,9 +80,7 @@ export class HomePage {
     }
 
     else {
-      this.currentLocation.latitude = 6.415745100000001;
-      this.currentLocation.longitude = 2.3413236;
-
+      
       this.navCtrl.push(EstimationPage, {
         currentLocation: this.currentLocation,
         userChoice: choice
@@ -78,4 +89,5 @@ export class HomePage {
     }    
     
   } 
+
 }
