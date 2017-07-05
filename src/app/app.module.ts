@@ -17,11 +17,12 @@ import { ListeLieuxProchesPage  }     from '../pages/listelieuxproches/listelieu
 //Ionic native
 import { StatusBar }                  from '@ionic-native/status-bar';
 import { SplashScreen }               from '@ionic-native/splash-screen';
+import { Geolocation }                from '@ionic-native/geolocation';
 
 import { HttpModule  }                from "@angular/http";
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
 import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
-
+import { IonicNativeService }         from "../services/ionicnative.service";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,8 @@ import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
   providers: [
     GooglePlaceApiService,
     GoogleMapsApiService,
+    IonicNativeService,
+    Geolocation,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
