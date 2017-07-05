@@ -1,6 +1,7 @@
 //core components
 import { Injectable  }                      from    '@angular/core';
 import { Http  }                            from    '@angular/http';
+import { ApiKey }                           from    '../globalparameters/apikey.model';
 import { GoogleMapsApiGlobal   }            from    '../models/googlemapsapi-global.model';
 import { GooglePlaceApiResult   }           from    '../models/googleplaceapi-result.model';
 import { IonicNativeGeolocation }           from    '../models/ionicnative-geolocation.model';
@@ -14,10 +15,10 @@ export class GoogleMapsApiService {
 
     private baseURLDistanceMatrix: string = "https://maps.googleapis.com/maps/api/distancematrix/";
     private output: string = 'json?';
-    private apikey: string = "AIzaSyCLO_avsG1-B2kj5-FDfdE3CMguE2RESiY";
+    private apikey: string;
 
     constructor (private http: Http) {
-        
+        this.apikey = ApiKey.googleApiKey;
     }
 
     /**
@@ -28,13 +29,19 @@ export class GoogleMapsApiService {
      */
    public getDistanceMatrix(origins: IonicNativeGeolocation, destinations: GooglePlaceApiResult): Promise<GoogleMapsApiGlobal> {
         
-        var mode :string = "driving";
-        var language: string = "en";
-        var origin: string = `origins=${origins.latitude},${origins.longitude}`;
-        
+        let mode :string = "driving";
+        let language: string = "en";
+        let origine: IonicNativeGeolocation = new IonicNativeGeolocation();
+
+        origine.longitude = 2.3770889 ;
+        origine.latitude = 6.3604289;
+
+        let origin: string = `origins=${origine.latitude},${origine.longitude}`;
+        console.log(origin)
+
         const parameters = `${origin}&destinations=place_id:${destinations.place_id}&mode=${mode}&language=${language}&key=${this.apikey}`;
         const url: string = this.baseURLDistanceMatrix+this.output+parameters;
-        
+        console.log("#####" + url);
         return this.http.get(url)
         .toPromise()
         .then(response => response.json() as GoogleMapsApiGlobal)

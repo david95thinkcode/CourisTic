@@ -7,6 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 //my models
+import { ApiKey }                               from    '../globalparameters/apikey.model';
 import { GooglePlaceApiResult   }               from    '../models/googleplaceapi-result.model';
 import { GooglePlaceApiGlobal   }               from    '../models/googleplaceapi-global.model';
 import { GooglePlaceApiPlaceSearchResult   }    from    '../models/googleplaceapi-placesearchresult.model';
@@ -20,11 +21,11 @@ export class GooglePlaceApiService {
     private baseURLPlacePhoto: string = "https://maps.googleapis.com/maps/api/place/photo?";
 
     private output: string = 'json?';
-    private apikey: string = "AIzaSyCLO_avsG1-B2kj5-FDfdE3CMguE2RESiY";
-    private radiusParDefaut = 50000;
+    private apikey: string;
+    private radiusParDefaut = 10000;
 
     constructor (private http: Http) {
-        
+        this.apikey = ApiKey.googleApiKey
     }
 
     /** Retourne un objet GooglePlaceApiGlobal représentant un lieu 
@@ -43,8 +44,6 @@ export class GooglePlaceApiService {
         const parameters = `placeid=${placeid}&key=${this.apikey}`;
         const url: string = this.baseURLDetail+this.output+parameters;
         
-        //console.log("URL ==> : " + url);
-
         return this.http.get(url)
         .toPromise()
         .then(response => response.json() as GooglePlaceApiGlobal)
@@ -77,7 +76,6 @@ export class GooglePlaceApiService {
      * ### #Facultatives parameters
      * - type : string with which identifies the type of place we want to get
      * - keyword : string 
-     * ############################## ########
      */
 
 /** Retourne tous lieux proches du lieu reçu en paramètre 
@@ -92,7 +90,7 @@ export class GooglePlaceApiService {
             radius = this.radiusParDefaut;
        }
 
-        const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&key=${this.apikey}`;
+        const parameters = `location=${choosenPlace.geometry.location.lat},${choosenPlace.geometry.location.lng}&radius=${radius}&key=${this.apikey}`;
         const url: string = this.baseURLNearbySearch+this.output+parameters;
         
         return this.http.get(url)
@@ -107,42 +105,43 @@ export class GooglePlaceApiService {
  */
     public getNearbyHostels(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
        const type: string = "lodging";
+       let location: string = `location=${choosenPlace.geometry.location.lat},${choosenPlace.geometry.location.lng}`;
 
        //Un radius par défaut
        if(radius == 0 || radius==null) {
             radius = this.radiusParDefaut;
        }
 
-        const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&type=${type}&key=${this.apikey}`;
+        const parameters = `${location}&radius=${radius}&type=${type}&key=${this.apikey}`;
         const url: string = this.baseURLNearbySearch+this.output+parameters;
         
         return this.http.get(url)
         .toPromise()
         .then(response => response.json() as GooglePlaceApiPlaceSearchResult)
-        .catch(error => console.log('Une erreur est survenue dans le service ' + error))
+        .catch(error => console.log('Une erreur est survenue dans getNearbyHostels() ' + error))
     }
 
-/** Retourne les Restaurants proches du lieu reçu en paramètre 
- * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
- * @param radius Distance en mètres délimitant la zone de recherche
- */
+    /** Retourne les Restaurants proches du lieu reçu en paramètre 
+     * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
+     * @param radius Distance en mètres délimitant la zone de recherche
+    */
     public getNearbyRestaurants(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
        const type: string = "restaurant";
-
+       let location: string = `location=${choosenPlace.geometry.location.lat},${choosenPlace.geometry.location.lng}`;
        //Un radius par défaut
        if(radius == 0 || radius==null) {
             radius = this.radiusParDefaut;
        }
 
-        const parameters = `location=${choosenPlace.geometry.location.lng},${choosenPlace.geometry.location.lat}&radius=${radius}&type=${type}&key=${this.apikey}`;
+        const parameters = `${location}&radius=${radius}&type=${type}&key=${this.apikey}`;
         const url: string = this.baseURLNearbySearch+this.output+parameters;
         
         return this.http.get(url)
         .toPromise()
         .then(response => response.json() as GooglePlaceApiPlaceSearchResult)
-        .catch(error => console.log('Une erreur est survenue dans le service ' + error))
+        .catch(error => console.log('Une erreur est survenue dans getNearbyRestaurants : ' + error))
     
-}
+    }
     
     /**Retourne l'URL d'une photo dont la référence a été passé en paramètre
      * Learn more on : https://developers.google.com/places/web-service/photos
