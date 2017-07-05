@@ -3,58 +3,37 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>" {{ query }} "</ion-title>
+    <ion-title>" {{ title }} "</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-list>
   <!--
+  <ion-list>  
     <ion-item *ngFor="let result of response.results">
-    <ion-thumbnail item-start>
-      <img [src]="result.url_to_main_Image">
-    </ion-thumbnail>
-    <h2>{{ result.name }}</h2>
-    <p> {{ result.formatted_address }}</p>
-    <button ion-button clear item-end>S'y rendre</button>
-  </ion-item>
-  -->
-
-  </ion-list>
-  <div *ngIf="response; else connexionFailed">
-  <ion-card *ngFor="let result of response.results" >
-   
-    <!-- Pour économiser la bande passande, ceci sera mis en commentaire pendant le dév
-    <img [src]="result.url_to_main_Image"/>
-    -->
-    <ion-card-content>
-      <ion-fab right>
-        <button ion-fab (tap)="showEstimation(result)">
-          <ion-icon name="pin"></ion-icon>
-        </button>
-      </ion-fab>
-      <ion-card-title>
-        {{ result.name }}
-      </ion-card-title>
+      <ion-thumbnail item-start>
+        <img [src]="result.url_to_main_Image">
+      </ion-thumbnail>
+      <h2>{{ result.name }}</h2>
       <p> {{ result.formatted_address }}</p>
-    </ion-card-content>
-    <ion-row>
-    <ion-col>
-      <button ion-button icon-left clear small>
-        <ion-icon name="heart"></ion-icon>
-        <div>Favoris</div>
-      </button>
-    </ion-col>
-    <ion-col>
-      <button ion-button icon-left clear small (tap)="showEstimation(result)">
-        <ion-icon name="flag"></ion-icon>
-        <div>S'y Rendre</div>
-      </button>
-    </ion-col>
-  </ion-row>
-  
-  </ion-card>
+      <button ion-button clear item-end>S'y rendre</button>
+    </ion-item>
+  </ion-list>
+  -->
+ 
+  <div *ngIf="results; else connexionFailed">
+    <ion-card *ngFor="let result of results" >
+    
+      <img [src]="result.url_to_main_Image"/>
+      <ion-card-content>
+        <ion-card-title>
+          {{ result.designation }}
+        </ion-card-title>
+        <p> {{ result.googleDetails.formatted_address }}</p>
+      </ion-card-content>
+      
+    </ion-card>
   </div>
   <ng-template #connexionFailed>
     <h3>Pas de connexion Internet</h3>

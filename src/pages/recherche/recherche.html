@@ -9,21 +9,8 @@
 
 <ion-content padding>
 
-  <ion-list>
-  <!--
-    <ion-item *ngFor="let result of response.results">
-    <ion-thumbnail item-start>
-      <img [src]="result.url_to_main_Image">
-    </ion-thumbnail>
-    <h2>{{ result.name }}</h2>
-    <p> {{ result.formatted_address }}</p>
-    <button ion-button clear item-end>S'y rendre</button>
-  </ion-item>
-  -->
-
-  </ion-list>
   <div *ngIf="response; else connexionFailed">
-  <ion-card *ngFor="let result of response.results" >
+  <ion-card *ngFor="let result of response.results" (tap)="showEstimation(result)">
    
     <!-- Pour économiser la bande passande, ceci sera mis en commentaire pendant le dév
     <img [src]="result.url_to_main_Image"/>
@@ -44,12 +31,6 @@
       <button ion-button icon-left clear small>
         <ion-icon name="heart"></ion-icon>
         <div>Favoris</div>
-      </button>
-    </ion-col>
-    <ion-col>
-      <button ion-button icon-left clear small (tap)="showEstimation(result)">
-        <ion-icon name="flag"></ion-icon>
-        <div>S'y Rendre</div>
       </button>
     </ion-col>
   </ion-row>
