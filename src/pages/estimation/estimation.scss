@@ -1,10 +1,69 @@
-page-estimation {   
+$colors: (
+  primary:    #488aff,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222,
+  energized:  #ffc527,
+  royal:      #7e60ff,
+  subtle:     #444444,
+  vibrant:    rebeccapurple,
+  bright:     #ffc125
+);
+
+
+page-estimation { 
+    
+    .big-header>.toolbar-background-md, .toolbar-background-md {
+        background: #0cebeb;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #29ffc6, #20e3b2, #0cebeb);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #29ffc6, #20e3b2, #0cebeb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+        color: rgba(255, 255, 255, 0.77);
+    }
+    
+    .segment-md .segment-button {
+        color: rgba(31, 19, 19, 0.96);
+    }
+
+    .segment-md .segment-button.activated, .segment-md .segment-button.segment-activated {
+        border-color : #fff;
+    }
+
+    ion-segment-button {
+        .button-effect {
+            background-color: white;
+        }
+    }
+
+    ion-header {
+        //background: #7474BF;  /* fallback for old browsers */
+        //background: -webkit-linear-gradient(to right, #348AC7, #7474BF);  /* Chrome 10-25, Safari 5.1-6 */
+        //background: linear-gradient(to right, #348AC7, #7474BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #0cebeb;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #29ffc6, #20e3b2, #0cebeb);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #29ffc6, #20e3b2, #0cebeb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        
+    }
 
     .trajet-true {
+
         
+        .ios, .md {
+ 
+            button {
+                align-items: baseline;
+            } 
+        }
 
         .estimation-resume {
-            background-color: #3F51B5;
+            background: #EC6F66;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #F3A183, #EC6F66);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #F3A183, #EC6F66); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
             ion-card-title {
                 color: white;

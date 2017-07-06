@@ -1,31 +1,28 @@
-<ion-header>
-  <ion-navbar>
+<ion-header >
+  <ion-navbar class="big-header">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>" {{ query }} "</ion-title>
+    <ion-title>{{ query }} </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="big-container">
 
   <div *ngIf="response; else connexionFailed">
-  <ion-card *ngFor="let result of response.results" (tap)="showEstimation(result)">
+  <ion-card *ngFor="let result of response.results" (tap)="showEstimation(result)" class="card-result">
    
-    <!-- Pour économiser la bande passande, ceci sera mis en commentaire pendant le dév
+    <!-- Pour économiser la bande passande, ceci sera mis en commentaire pendant le dév-->
     <img [src]="result.url_to_main_Image"/>
-    -->
-    <ion-card-content>
-      <ion-fab right>
-        <button ion-fab (tap)="showEstimation(result)">
-          <ion-icon name="pin"></ion-icon>
-        </button>
-      </ion-fab>
-      <ion-card-title>
+    
+    <ion-card-content text-center>      
+      <ion-card-title text-center >
         {{ result.name }}
       </ion-card-title>
       <p> {{ result.formatted_address }}</p>
+      <p> {{ result.vinicity }}</p>
     </ion-card-content>
+    <!--
     <ion-row>
     <ion-col>
       <button ion-button icon-left clear small>
@@ -33,7 +30,7 @@
         <div>Favoris</div>
       </button>
     </ion-col>
-  </ion-row>
+  </ion-row>-->
   
   </ion-card>
   </div>

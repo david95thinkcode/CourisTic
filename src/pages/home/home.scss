@@ -1,5 +1,41 @@
 page-home {
 
+  .header-md::after {
+    background: none;
+  }
+
+  .big-header>.toolbar-background-md {
+        background: transparent;
+  }
+
+  .principal-text {
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  input {
+    color: black;    
+    font-size: xx-large;
+  }
+
+  ion-content {
+        color: white;
+        background: #0cebeb;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #29ffc6, #20e3b2, #0cebeb);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #29ffc6, #20e3b2, #0cebeb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    .item-md {
+      background: transparent;
+    }
+
+    .content-md {
+      background: #83a4d4;
+      background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4); 
+      background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+*/
+    }
+  }
+
+/*
   ion-card {
     position: relative;
     text-align: center;
@@ -21,5 +57,5 @@ page-home {
     width: 100%;
     color: #fff;
   }
-  
+*/
 }

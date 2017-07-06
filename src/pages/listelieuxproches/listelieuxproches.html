@@ -3,25 +3,12 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>" {{ title }} "</ion-title>
+    <ion-title> {{ title }} à proximité</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <!--
-  <ion-list>  
-    <ion-item *ngFor="let result of response.results">
-      <ion-thumbnail item-start>
-        <img [src]="result.url_to_main_Image">
-      </ion-thumbnail>
-      <h2>{{ result.name }}</h2>
-      <p> {{ result.formatted_address }}</p>
-      <button ion-button clear item-end>S'y rendre</button>
-    </ion-item>
-  </ion-list>
-  -->
- 
   <div *ngIf="results; else connexionFailed">
     <ion-card *ngFor="let result of results" >
     
@@ -31,6 +18,7 @@
           {{ result.designation }}
         </ion-card-title>
         <p> {{ result.googleDetails.formatted_address }}</p>
+        <p> {{  result.googleDetails.vicinity }}</p>
       </ion-card-content>
       
     </ion-card>

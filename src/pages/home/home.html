@@ -1,42 +1,35 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar class="big-header">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>CourisTic</ion-title>
+    <ion-title> </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <!--
-    <ion-searchbar></ion-searchbar>
-  -->
   
-  <ion-list padding>
-
-    <ion-item >
-      <ion-label floating>Lieu à rechercher</ion-label>
+  <h1 text-center class="principal-text"> Où voulez-vous visiter ?</h1>
+ 
+    <ion-item padding>
+      <!--<ion-label>Lieu à rechercher</ion-label>-->
       <ion-input type="text" [(ngModel)]="place_to_search">{{ place_to_search }}</ion-input>
     </ion-item>
 
-    <br> 
-    <button ion-button full icon-right (tap)="searchPlaces()">OK
-      <ion-icon name="search"></ion-icon>
-    </button>
+    <br>
+    <div padding>
+      <button ion-button full color="light" round icon-right (tap)="searchPlaces()">RECHERCHER
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </div>
     
-    <ion-item>
-      Position actuelle <br>
-      Longitude : {{ currentLocation.longitude }} <br>
-      Latitude : {{ currentLocation.latitude }}
-    </ion-item>
-  </ion-list>
-
+<!--
   <ion-card>
-    <!-- <img [src]="picture_url" (tap)="showEstimation(result)"/> -->
+     <img [src]="picture_url" (tap)="showEstimation(result)"/> 
     <div class="card-title" *ngIf="result">{{ result.name }}</div>
-    <!-- <div class="card-subtitle">41 Listings</div> -->
+    <div class="card-subtitle">41 Listings</div> 
   </ion-card>
-
+-->
   <!--Bouton flottant -->
   <ion-fab right bottom>
     <button ion-fab>
