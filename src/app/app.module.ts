@@ -23,6 +23,7 @@ import { HttpModule  }                from "@angular/http";
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
 import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
 import { IonicNativeService }         from "../services/ionicnative.service";
+import { ExpandableComponent }        from '../components/expandable/expandable';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { IonicNativeService }         from "../services/ionicnative.service";
     EstimationPage,
     AidePage,
     RecherchePage,
-    ListeLieuxProchesPage
+    ListeLieuxProchesPage,
+    ExpandableComponent
   ],
   imports: [
     HttpModule,

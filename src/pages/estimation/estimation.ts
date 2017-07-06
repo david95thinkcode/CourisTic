@@ -37,17 +37,49 @@ export class EstimationPage {
   array_Hotel: Array<Hotel>;
   array_restaurant: Array<Restaurant>;
   
+  //Page du segment choisi par défaut
+  choice: string = "estimation";
+
+  //Pour l'accordion
+  items: any = [];
+  itemExpandHeight: number = 100;
+
  constructor(private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams)
  {
    this.trajet.userDestination = navParams.get('userChoice');
    this.Initialise();
    this.setDistanceDuration();
-   this.countNearbyPlaces();
+   if (this.trajet.itineraire = true ) 
+   {
+    this.countNearbyPlaces(); 
+   }
    this.getGlobalPrice();
-   //console.log(this.array_Hotel);
-   //console.log(this.array_restaurant);
+
+   //pour l'accordion
+   this.items = [
+            {expanded: false},
+            {expanded: false},
+            {expanded: false}
+        ];
  }
 
+ //Pour l'accordion
+  public expandItem(item){
+  
+    this.items.map((listItem) => {
+  
+      if(item == listItem){
+        listItem.expanded = !listItem.expanded;
+      } 
+      else {
+        listItem.expanded = false;
+      }
+  
+      return listItem;
+  
+    });
+  
+  }
 
   private Initialise() {
 
@@ -193,9 +225,6 @@ export class EstimationPage {
         totalplaces ++;
       });
 
-      //Observations
-      console.log(results);
-      
     })
     .catch(error => console.log('countNearbyPlaces() error : ' + error));
     
