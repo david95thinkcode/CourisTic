@@ -51,7 +51,7 @@ export class RecherchePage {
          * On stocke dans result un object contenant les détails d'un lieu trouvé
          * On définit l'index de l'image principale de notre lieu
          * On récupère l'url de l'image principale
-         */
+        */
         this.results.forEach(result => 
         {
           const secureIndexForPhoto: number = 0;
