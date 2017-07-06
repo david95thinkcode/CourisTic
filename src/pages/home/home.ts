@@ -1,4 +1,5 @@
 import { Component }                from '@angular/core';
+import { LoadingController }        from 'ionic-angular';
 import { NavController }            from 'ionic-angular';
 import { RecherchePage  }           from '../../pages/recherche/recherche';
 import { EstimationPage  }          from '../../pages/estimation/estimation';
@@ -28,18 +29,13 @@ export class HomePage {
   picture_url: string;
   place_to_search: string;
 
-  constructor(public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
+  constructor(public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
   {
-      this.place_to_search = "uac";
+      
+      this.place_to_search = "";
       this.Initialise();
       this.getCurrentPosition();
       //console.log(this.currentLocation);
-  }
-
-  public getCurrentPosition() {
-        
-    this.ionicNativeService.loadCurrentLocationOn(this.currentLocation);
-
   }
 
 /**
@@ -66,10 +62,11 @@ export class HomePage {
    * 
    */
   public searchPlaces() {
-
+    
     this.navCtrl.push(RecherchePage, {
       query: this.place_to_search
     });
+    this.presentLoading();
   }
 
   public showEstimation(choice : GooglePlaceApiResult) {
@@ -89,5 +86,18 @@ export class HomePage {
     }    
     
   } 
+
+//Loader
+  public presentLoading() {
+    let loader = this.loadingCtrl.create({
+      content: "Recherche en cours...",
+      duration: 2000
+    });
+    loader.present();
+  }
+
+  public getCurrentPosition() {        
+    this.ionicNativeService.loadCurrentLocationOn(this.currentLocation);
+  }
 
 }
