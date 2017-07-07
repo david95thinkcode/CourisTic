@@ -20,10 +20,20 @@ import { SplashScreen }               from '@ionic-native/splash-screen';
 import { Geolocation }                from '@ionic-native/geolocation';
 
 import { HttpModule  }                from "@angular/http";
+import {  AngularFireModule }         from 'angularfire2';
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
 import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
 import { IonicNativeService }         from "../services/ionicnative.service";
 import { ExpandableComponent }        from '../components/expandable/expandable';
+
+//AngularFire2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyBdn42YyUnmDdA4PQdoSP_gbasG-nh0tjw",
+  authDomain: "projet-tutore-1497454700964.firebaseapp.com",
+  databaseURL: "https://projet-tutore-1497454700964.firebaseio.com",
+  storageBucket: "projet-tutore-1497454700964.appspot.com",
+  messagingSenderId: "927618945913"
+}
 
 @NgModule({
   declarations: [
@@ -43,6 +53,7 @@ import { ExpandableComponent }        from '../components/expandable/expandable'
     HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
