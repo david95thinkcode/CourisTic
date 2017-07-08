@@ -21,6 +21,9 @@ import { Geolocation }                from '@ionic-native/geolocation';
 
 import { HttpModule  }                from "@angular/http";
 import {  AngularFireModule }         from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
 import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
 import { IonicNativeService }         from "../services/ionicnative.service";
@@ -53,7 +56,9 @@ export const firebaseConfig = {
     HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,11 +1,15 @@
 import { Component }                           from '@angular/core';
-import { NavController, NavParams }            from 'ionic-angular';
+import { NavController, NavParams, AlertController }            from 'ionic-angular';
 
 import { ListeLieuxProchesPage  }              from '../../pages/listelieuxproches/listelieuxproches';
 
 import { GoogleMapsApiService }                from '../../services/googlemapsapi.service';
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
 import { IonicNativeService }                  from '../../services/ionicnative.service';
+
+//import {AngularFire}   from 'angularfire2';
+import {FirebaseListObservable}                from 'angularfire2/database';
+import {AngularFireDatabase } from 'angularfire2/database';
 
 import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi-global.model';
 import { GoogleMapsApiGlobal }                 from '../../models/googlemapsapi-global.model';
@@ -40,13 +44,20 @@ export class EstimationPage {
   //Page du segment choisi par défaut
   choice: string = "estimation";
 
+  //Pour l'alert
+  alertCtrl: AlertController;
+
+  //Liste de lieux favoris
+  favoriteplaces: FirebaseListObservable<any>;
+
   //Pour l'accordion
   items: any = [];
   itemExpandHeight: number = 100;
 
- constructor(private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams)
+ constructor(af: AngularFireDatabase, private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams, alertCtrl: AlertController)
  {
    this.trajet.userDestination = navParams.get('userChoice');
+   this.alertCtrl = alertCtrl;
    this.Initialise();
    this.setDistanceDuration();
    if (this.trajet.itineraire = true ) 
@@ -260,7 +271,37 @@ export class EstimationPage {
   public addToFavorites(favoritePlace: GooglePlaceApiResult)
   {
     //TODO: enregistrer le favoris dans la base de données
+    /*
+    let prompt = this.alertCtrl.create({
+      title: "Nom du Lieu favoris",
+      message: "Entrer le nom de ce lieu",
+      input: [
+        {
+          name: 'title',
+          placeholder: 'Title'
+        },
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          handler: data => {
+            console.log("Cancel clicked");
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+          this.favoriteplaces.push({
+            title: data.title
+          });
+        }
+        }
+      ]
+
+    }) 
+    */
     console.log(favoritePlace.name + " ajouté aux favoris");
+
   }
 
   private getCurrentLocation() {
