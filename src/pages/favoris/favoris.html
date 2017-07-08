@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="dark">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -8,20 +8,13 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Favoris</h3>
-  
-  <ion-card>
-    <img src="assets/img/gow.jpg"/>
-    <ion-card-content>
-      <ion-card-title>
-        Ouidah 
-        </ion-card-title>
-      <p>
-        The most popular industrial group ever, and largely
-        responsible for bringing the music to a mass audience.
-      </p>
-  </ion-card-content>
-</ion-card>
+  <h3 text-center>Favoris</h3>
+
+  <ion-list>
+    <ion-item *ngFor="let favplace of favoriteplaces | async">
+       {{ favplace.name }} 
+    </ion-item>
+  </ion-list>
 
   <ion-card>
     <img src="assets/img/gow.jpg"/>

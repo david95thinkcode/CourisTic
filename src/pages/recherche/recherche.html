@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="big-container">
+<ion-content class="big-container">
 
   <div *ngIf="response; else connexionFailed">
   <ion-card *ngFor="let result of response.results" (tap)="showEstimation(result)" class="card-result">
