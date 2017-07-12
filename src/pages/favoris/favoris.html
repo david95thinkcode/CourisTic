@@ -10,22 +10,26 @@
 <ion-content padding>
   <h3 text-center>Favoris</h3>
 
+<!--
   <ion-list>
-    <ion-item *ngFor="let favplace of favoriteplaces | async">
-       {{ favplace.name }} 
+    <ion-item *ngFor="let place of favoriteplaces | async">
+       {{ place.name }} 
     </ion-item>
   </ion-list>
-
-  <ion-card>
-    <img src="assets/img/gow.jpg"/>
+-->
+  <ion-card *ngFor="let place of favoriteplaces | async">
+    <img  [src]="place.picture_URL"/>
     <ion-card-content>
       <ion-card-title>
-        God of War 4 
+        {{ place.name }}
         </ion-card-title>
       <p>
-        The most popular industrial group ever, and largely
-        responsible for bringing the music to a mass audience.
+        description
       </p>
+      <button ion-button icon-left clear small (tap)="remove(place.$key)">
+        <ion-icon name="heart"></ion-icon>
+        <div>Favoris</div>
+      </button>
   </ion-card-content>
 </ion-card>
 

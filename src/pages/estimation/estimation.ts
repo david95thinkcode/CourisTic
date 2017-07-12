@@ -1,15 +1,14 @@
 import { Component }                           from '@angular/core';
 import { NavController, NavParams, AlertController }            from 'ionic-angular';
+import { ToastController }                     from 'ionic-angular';
+import {FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
+
 
 import { ListeLieuxProchesPage  }              from '../../pages/listelieuxproches/listelieuxproches';
 
 import { GoogleMapsApiService }                from '../../services/googlemapsapi.service';
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
 import { IonicNativeService }                  from '../../services/ionicnative.service';
-
-//import {AngularFire}   from 'angularfire2';
-import {FirebaseListObservable}                from 'angularfire2/database';
-import {AngularFireDatabase } from 'angularfire2/database';
 
 import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi-global.model';
 import { GoogleMapsApiGlobal }                 from '../../models/googlemapsapi-global.model';
@@ -49,17 +48,22 @@ export class EstimationPage {
 
   //Liste de lieux favoris
   favoriteplaces: FirebaseListObservable<any>;
-
+  favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
+  
   //Pour l'accordion
   items: any = [];
   itemExpandHeight: number = 100;
 
- constructor(af: AngularFireDatabase, private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams, alertCtrl: AlertController)
+ constructor(public toastCtrl: ToastController, af: AngularFireDatabase, private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams, alertCtrl: AlertController)
  {
    this.trajet.userDestination = navParams.get('userChoice');
    this.alertCtrl = alertCtrl;
+   //Ci-dessous on fait le lien entre notre base sur firebase et notre variable favoritesplaces
+   this.favoriteplaces = af.list('/favoriteplaces');
+   
    this.Initialise();
    this.setDistanceDuration();
+   //On décide si l'on doit compter ou pas
    if (this.trajet.itineraire = true ) 
    {
     this.countNearbyPlaces(); 
@@ -268,45 +272,66 @@ export class EstimationPage {
   }
 
   
+  /** ENREGISTRE LE LIEU DANS FIREBASE
+   * 
+   * @param favoritePlace Le lieu à enregistrer
+   */
   public addToFavorites(favoritePlace: GooglePlaceApiResult)
   {
-    //TODO: enregistrer le favoris dans la base de données
-    /*
-    let prompt = this.alertCtrl.create({
-      title: "Nom du Lieu favoris",
-      message: "Entrer le nom de ce lieu",
-      input: [
-        {
-          name: 'title',
-          placeholder: 'Title'
-        },
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          handler: data => {
-            console.log("Cancel clicked");
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-          this.favoriteplaces.push({
-            title: data.title
-          });
-        }
-        }
-      ]
-
-    }) 
-    */
-    console.log(favoritePlace.name + " ajouté aux favoris");
+    //Controle doublon
+   /* var theDataToAdd = userName;
+    var ref = new Firebase('https://SampleChat.firebaseIO-demo.com/users/' + theDataToAdd);
+    this.favoriteplacesDBURL.on('value', function(snapshot) {
+      if (snapshot.exists())
+          alert ("exist");
+      else
+          alert ("not exist");
+    });
+*/
+    let successtoastMessage: string = favoritePlace.name + " ajouté auxfavoris";
+    let failuretoastMessage: string = "Echec d'ajout " + favoritePlace.name + " aux favoris !";
+    
+    this.favoriteplaces.push({
+      placeid: favoritePlace.place_id,
+      name: favoritePlace.name,
+      picture_URL: favoritePlace.url_to_main_Image            
+    });
+    
+    this.presentToast(successtoastMessage);
 
   }
+
+  public  toggleStar(postRef, uid) {
+    postRef.transaction(function(post) {
+      if (post) {
+        if (post.stars && post.stars[uid]) {
+          post.starCount--;
+          post.stars[uid] = null;
+        } else {
+          post.starCount++;
+          if (!post.stars) {
+            post.stars = {};
+          }
+          post.stars[uid] = true;
+        }
+      }
+      return post;
+    });
+}
 
   private getCurrentLocation() {
     this.ionicNativeService.loadCurrentLocationOn(this.trajet.userPosition);
   }
 
+  /**
+   * Permet d'afficher un toast 
+   */
+  private presentToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
+  }
 
 }
