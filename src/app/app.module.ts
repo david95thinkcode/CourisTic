@@ -27,7 +27,6 @@ import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
 import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
 import { IonicNativeService }         from "../services/ionicnative.service";
-import { ExpandableComponent }        from '../components/expandable/expandable';
 
 //AngularFire2 Settings
 export const firebaseConfig = {
@@ -49,8 +48,7 @@ export const firebaseConfig = {
     EstimationPage,
     AidePage,
     RecherchePage,
-    ListeLieuxProchesPage,
-    ExpandableComponent
+    ListeLieuxProchesPage
   ],
   imports: [
     HttpModule,
