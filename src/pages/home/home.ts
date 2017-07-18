@@ -30,8 +30,7 @@ export class HomePage {
   place_to_search: string;
 
   constructor(public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
-  {
-      
+  {      
       this.place_to_search = "";
       this.Initialise();
       this.getCurrentPosition();
@@ -58,9 +57,7 @@ export class HomePage {
     });
   }
 
-  /**Pour lancer une recherche de lieux à partir
-   * 
-   */
+  /**Lance une recherche de lieux */
   public searchPlaces() {
     
     this.navCtrl.push(RecherchePage, {
@@ -87,7 +84,7 @@ export class HomePage {
     
   } 
 
-//Loader
+  /** AFFICHE LE LOADER */
   public presentLoading() {
     let loader = this.loadingCtrl.create({
       content: "Recherche en cours...",

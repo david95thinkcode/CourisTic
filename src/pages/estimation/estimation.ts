@@ -3,7 +3,6 @@ import { NavController, NavParams, AlertController }            from 'ionic-angu
 import { ToastController }                     from 'ionic-angular';
 import {FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
 
-
 import { ListeLieuxProchesPage  }              from '../../pages/listelieuxproches/listelieuxproches';
 
 import { GoogleMapsApiService }                from '../../services/googlemapsapi.service';
@@ -39,6 +38,9 @@ export class EstimationPage {
   reponse: GoogleMapsApiGlobal = new GoogleMapsApiGlobal();
   array_Hotel: Array<Hotel>;
   array_restaurant: Array<Restaurant>;
+  //Liste de lieux favoris
+  favoriteplaces: FirebaseListObservable<any>;
+  favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
   
   //Page du segment choisi par défaut
   choice: string = "estimation";
@@ -46,14 +48,7 @@ export class EstimationPage {
   //Pour l'alert
   alertCtrl: AlertController;
 
-  //Liste de lieux favoris
-  favoriteplaces: FirebaseListObservable<any>;
-  favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
   
-  //Pour l'accordion
-  items: any = [];
-  itemExpandHeight: number = 100;
-
  constructor(public toastCtrl: ToastController, af: AngularFireDatabase, private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams, alertCtrl: AlertController)
  {
    this.trajet.userDestination = navParams.get('userChoice');
@@ -69,32 +64,7 @@ export class EstimationPage {
     this.countNearbyPlaces(); 
    }
    this.getGlobalPrice();
-
-   //pour l'accordion
-   this.items = [
-            {expanded: false},
-            {expanded: false},
-            {expanded: false}
-        ];
  }
-
- //Pour l'accordion
-  public expandItem(item){
-  
-    this.items.map((listItem) => {
-  
-      if(item == listItem){
-        listItem.expanded = !listItem.expanded;
-      } 
-      else {
-        listItem.expanded = false;
-      }
-  
-      return listItem;
-  
-    });
-  
-  }
 
   private Initialise() {
 
@@ -120,8 +90,8 @@ export class EstimationPage {
    *  A NOTRE OBJET "trajet"
    *  On lance la requête de recherche d'itinéraire
    *  On vérifie d'abords si un itinéraire a été trouvé
-   *  S'il n'a pas été trouvé, on envoie un message a l'utilisateur
-   *  S'il a été trouvé contraire, on met à jour l'objet trajet
+   *  S'il n'a pas été trouvé, on envoie un message à l'utilisateur
+   *  S'il a été trouvé, on met à jour l'objet trajet
   */
   private setDistanceDuration() {
 
@@ -278,16 +248,17 @@ export class EstimationPage {
    */
   public addToFavorites(favoritePlace: GooglePlaceApiResult)
   {
-    //Controle doublon
-   /* var theDataToAdd = userName;
-    var ref = new Firebase('https://SampleChat.firebaseIO-demo.com/users/' + theDataToAdd);
-    this.favoriteplacesDBURL.on('value', function(snapshot) {
-      if (snapshot.exists())
-          alert ("exist");
-      else
-          alert ("not exist");
-    });
-*/
+    
+    /* //Controle doublon
+      var theDataToAdd = userName;
+      var ref = new Firebase('https://SampleChat.firebaseIO-demo.com/users/' + theDataToAdd);
+      this.favoriteplacesDBURL.on('value', function(snapshot) {
+        if (snapshot.exists())
+            alert ("exist");
+        else
+            alert ("not exist");
+      });
+    */
     let successtoastMessage: string = favoritePlace.name + " ajouté auxfavoris";
     let failuretoastMessage: string = "Echec d'ajout " + favoritePlace.name + " aux favoris !";
     
@@ -298,10 +269,10 @@ export class EstimationPage {
     });
     
     this.presentToast(successtoastMessage);
-
   }
 
-  public  toggleStar(postRef, uid) {
+/** AJOUTE UN LIEU AU FAVORIS SI INEXISTANT DANS LA LISTE DES FAVORIS ; RETIRE SI EXISTANT */
+  public toggleStar(postRef, uid) {
     postRef.transaction(function(post) {
       if (post) {
         if (post.stars && post.stars[uid]) {
@@ -317,7 +288,7 @@ export class EstimationPage {
       }
       return post;
     });
-}
+  }
 
   private getCurrentLocation() {
     this.ionicNativeService.loadCurrentLocationOn(this.trajet.userPosition);

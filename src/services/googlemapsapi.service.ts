@@ -33,15 +33,17 @@ export class GoogleMapsApiService {
         let language: string = "en";
         let origine: IonicNativeGeolocation = new IonicNativeGeolocation();
 
+        //Valeur par défaut car problème de réception de origins
         origine.longitude = 2.3770889 ;
         origine.latitude = 6.3604289;
 
+        //let origin: string = `origins=${origins.latitude},${origins.longitude}`;
         let origin: string = `origins=${origine.latitude},${origine.longitude}`;
         console.log(origin)
 
         const parameters = `${origin}&destinations=place_id:${destinations.place_id}&mode=${mode}&language=${language}&key=${this.apikey}`;
         const url: string = this.baseURLDistanceMatrix+this.output+parameters;
-        console.log("#####" + url);
+        //console.log("#####" + url);
         return this.http.get(url)
         .toPromise()
         .then(response => response.json() as GoogleMapsApiGlobal)

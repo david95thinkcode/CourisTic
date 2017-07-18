@@ -7,6 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 @Injectable()
+
 export class IonicNativeService {
 
     constructor(private geolocation: Geolocation) {
@@ -34,23 +35,6 @@ export class IonicNativeService {
     }
 
     /** 
-        public getCurrentPosition() {
-            
-            //Notre objet représentant la position du périphérique
-            let currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation;
-
-            this.geolocation.getCurrentPosition()
-            .then((response) => {
-
-                currentLocation = response.coords;
-                console.log("CurrentPosition : " + currentLocation);
-
-            })
-            .catch((error) => {
-                console.log('Error getting location ==> ', error);
-            });
-        }
-
         public watchPosition() {
             
             let watch = this.geolocation.watchPosition();

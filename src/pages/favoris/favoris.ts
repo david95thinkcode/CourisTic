@@ -1,6 +1,5 @@
 import { Component }                            from '@angular/core';
 import { NavController, ToastController }       from 'ionic-angular';
-
 import { NavParams }                            from 'ionic-angular';
 import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
 
@@ -16,17 +15,8 @@ export class FavorisPage {
 constructor(public navCtrl: NavController, public toastCtrl: ToastController, private navParams: NavParams, af: AngularFireDatabase) {
 
     //On fait la liaison entre firebase et notre variable favoriteplaces
-    this.favoriteplaces = af.list('/favoriteplaces');
-    this.loadFavorite();   
-  
+    this.favoriteplaces = af.list('/favoriteplaces');  
 }
-
-  //TODO: Ecrire le code de la méthode
-  private loadFavorite() {
-    console.log("Chargement des favoris en cours ...");
-
-    console.log("Chargement des favoris terminé !");
-  }
 
   /**
    * Retire un lieu des favoris

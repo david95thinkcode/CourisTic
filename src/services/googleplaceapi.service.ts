@@ -2,17 +2,16 @@
 import {    Injectable  } from '@angular/core';
 import {    Http  } from '@angular/http';
 
-//RxJS
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
-//my models
 import { ApiKey }                               from    '../globalparameters/apikey.model';
 import { GooglePlaceApiResult   }               from    '../models/googleplaceapi-result.model';
 import { GooglePlaceApiGlobal   }               from    '../models/googleplaceapi-global.model';
 import { GooglePlaceApiPlaceSearchResult   }    from    '../models/googleplaceapi-placesearchresult.model';
 
 @Injectable()
+
 export class GooglePlaceApiService {
     private baseURLDetail: string = "https://maps.googleapis.com/maps/api/place/details/";
     private baseURLTextSearch: string = "https://maps.googleapis.com/maps/api/place/textsearch/";
@@ -67,23 +66,12 @@ export class GooglePlaceApiService {
         .catch(error => console.log('TextSearch error :: ' + error))
     }
 
-    /****Google place API - Nearby Search
-     * 
-     * Parameters :
-     * - radius : Définit la distance (en mètres) délimitant la zone de recherche des lieux proches.
-     * - location : latitude,longitude.
-     * 
-     * ### #Facultatives parameters
-     * - type : string with which identifies the type of place we want to get
-     * - keyword : string 
+    
+    /** Retourne tous lieux proches du lieu reçu en paramètre 
+     * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
+     * @param radius Distance en mètres délimitant la zone de recherche
      */
-
-/** Retourne tous lieux proches du lieu reçu en paramètre 
- * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
- * @param radius Distance en mètres délimitant la zone de recherche
- */
     public getNearbySearchPlaces(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
-       //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
        
        //Un radius par défaut
        if(radius == 0 || radius == null) {
@@ -99,10 +87,10 @@ export class GooglePlaceApiService {
         .catch(error => console.log('Une erreur est survenue dans le service ' + error))
     }
 
-/** Retourne les hotels proches du lieu reçu en paramètre 
- * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
- * @param radius Distance en mètres délimitant la zone de recherche
- */
+    /** Retourne les hotels proches du lieu reçu en paramètre 
+     * @param choosenPlace Objet GooglePlaceApiResult représentant le lieu recu en paramètres
+     * @param radius Distance en mètres délimitant la zone de recherche
+     */
     public getNearbyHostels(choosenPlace: GooglePlaceApiResult, radius: number): Promise<GooglePlaceApiPlaceSearchResult> {
        const type: string = "lodging";
        let location: string = `location=${choosenPlace.geometry.location.lat},${choosenPlace.geometry.location.lng}`;
