@@ -17,21 +17,10 @@ export class IonicNativeService {
     /** Charge dans l'objet reçu en paramètre la position actuelle du périphérique
      * @position: objet IonicNativeGeolocation recu 
      */
-    public loadCurrentLocationOn(position: IonicNativeGeolocation){
-        
-        this.geolocation.getCurrentPosition()
-            .then((response) => {
-                position.accuracy = response.coords.accuracy;
-                position.altitude = response.coords.altitude;
-                position.longitude = response.coords.longitude;
-                position.latitude = response.coords.latitude;
-                position.speed = response.coords.speed;
-                position.heading = response.coords.heading;
-                position.altitudeAccuracy = response.coords.altitudeAccuracy;
-            })
-            .catch((error) => {
-                console.log('Error getting location ==> ', error);
-            });
+    public getCurrentLocation(){
+        return this.geolocation.getCurrentPosition()
+            .then((response) =>  response.coords as IonicNativeGeolocation)
+            .catch((error) => console.log("Unable to get location because => " + error));
     }
 
     /** 

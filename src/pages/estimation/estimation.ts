@@ -40,7 +40,7 @@ export class EstimationPage {
   array_restaurant: Array<Restaurant>;
   //Liste de lieux favoris
   favoriteplaces: FirebaseListObservable<any>;
-  favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
+  //favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
   
   //Page du segment choisi par défaut
   choice: string = "estimation";
@@ -53,6 +53,7 @@ export class EstimationPage {
  {
    this.trajet.userDestination = navParams.get('userChoice');
    this.alertCtrl = alertCtrl;
+   
    //Ci-dessous on fait le lien entre notre base sur firebase et notre variable favoritesplaces
    this.favoriteplaces = af.list('/favoriteplaces');
    
@@ -94,58 +95,68 @@ export class EstimationPage {
    *  S'il a été trouvé, on met à jour l'objet trajet
   */
   private setDistanceDuration() {
+    //Avant tout, on récupère à nouveau la position de l'utilisateur...
+    //par mesure de sécurité
 
-    this.getCurrentLocation();
+    this.ionicNativeService.getCurrentLocation()
+    //Position bien récupéré
+    .then(fetchedLocation => {
+      this.trajet.userPosition = fetchedLocation as IonicNativeGeolocation;
 
-    if(this.trajet.userPosition == null) {
-      console.log("EstimationPage : Origine non reçue");
-      console.log(this.trajet.userPosition);
-    }
-    //Destination présente (non null et bien reçue dans le constructeur)
-    else if (this.trajet.userDestination == null)
-    {
-      console.log("EstimationPage : Destination non reçue");
-    } 
-    //Destination absente
-    else 
-    { 
-      this.googleMapsApiService.getDistanceMatrix(this.trajet.userPosition, this.trajet.userDestination)
-      .then(fetched =>
+      //Destination présente (non null et bien reçue dans le constructeur)
+      if (this.trajet.userDestination == null)
       {
-        this.reponse = fetched;
-        this.rows = this.reponse.rows;
-        
-        //Aucun itinéraire n'a été trouvé 
-        if ( this.rows[0].elements[0].status == "ZERO_RESULTS") {
-          this.trajet.itineraire = false ;
-        }
-        //Itinéraire trouvé
-        else 
+        console.log("EstimationPage : Destination non reçue");
+      } 
+      //Destination absente
+      else 
+      { 
+        this.googleMapsApiService.getDistanceMatrix(this.trajet.userPosition, this.trajet.userDestination)
+        .then(fetched =>
         {
-          this.trajet.itineraire = true;          
-          //Récupération et affectation des données "distance" et "durée" au trajet
-          this.trajet.distance_trajet = this.rows[0].elements[0].distance;
-          this.trajet.duree_trajet = this.rows[0].elements[0].duration;
-        }
+          this.reponse = fetched;
+          this.rows = this.reponse.rows;
+          
+          //Aucun itinéraire n'a été trouvé 
+          if ( this.rows[0].elements[0].status == "ZERO_RESULTS") {
+            this.trajet.itineraire = false ;
+          }
+          //Itinéraire trouvé
+          else 
+          {
+            this.trajet.itineraire = true;         
+            console.log(this.trajet.userPosition);
+            //Récupération et affectation des données "distance" et "durée" au trajet
+            this.trajet.distance_trajet = this.rows[0].elements[0].distance;
+            this.trajet.duree_trajet = this.rows[0].elements[0].duration;
+          }
 
-       /* //OBSERVATION 
-        console.log(this.rows);
-        console.log(this.rows[0]);
-        console.log(this.rows[0].elements);
-        console.log(this.rows[0].elements[0]);
-        console.log(this.rows[0].elements[0].distance);
-        console.log(this.rows[0].elements[0].distance.text);
-        console.log("Destination : "+ this.trajet.userDestination);
-        */
-      })
-      .catch(error => console.log('getDistanceMatrix() error :: ' + error));
-    }
+        /* //OBSERVATION 
+          console.log(this.rows);
+          console.log(this.rows[0]);
+          console.log(this.rows[0].elements);
+          console.log(this.rows[0].elements[0]);
+          console.log(this.rows[0].elements[0].distance);
+          console.log(this.rows[0].elements[0].distance.text);
+          console.log("Destination : "+ this.trajet.userDestination);
+          */
+        })
+        .catch(error => console.log('getDistanceMatrix() error :: ' + error));
+      }
 
+    })
+    .catch(error => {
+      console.log("ERREUR TROUVEE");
+    })
+    
   }
 
+  /**
+   * REMPLI LE TABLEAU CONTENANT LA LISTE DES HOTELS
+   */
   private populateHotelArray() {
-    var response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
-    var results: GooglePlaceApiResult[];
+    let response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
+    let results: GooglePlaceApiResult[];
 
     this.googlePlaceApiService.getNearbyHostels(this.trajet.userDestination, 0)
     .then(fetched => 
@@ -155,7 +166,7 @@ export class EstimationPage {
 
       results.forEach(result => {
         //On insère un hotel dans le tableau d'hotels
-        var un_hotel = new Hotel();
+        let un_hotel = new Hotel();
         un_hotel.googleDetails = result;
         un_hotel.designation = un_hotel.googleDetails.name;
 
@@ -168,9 +179,12 @@ export class EstimationPage {
     
   }
 
+  /**
+   * REMPLI LE TABLEAU CONTENANT LA LISTE DES RESTAURANTS
+   */
   private populateRestaurantArray() {
-    var response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
-    var results: GooglePlaceApiResult[];
+    let response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
+    let results: GooglePlaceApiResult[];
 
     this.googlePlaceApiService.getNearbyRestaurants(this.trajet.userDestination, 0)
     .then(fetched => 
@@ -179,7 +193,7 @@ export class EstimationPage {
       results = response.results;
       results.forEach(result => {
         //On insère un restaurant dans le tableau de restaurants
-        var un_resto = new Restaurant();
+        let un_resto = new Restaurant();
         un_resto.googleDetails = result;
         un_resto.designation = un_resto.googleDetails.name;
 
@@ -194,9 +208,9 @@ export class EstimationPage {
   /** Compte les lieux a proximité de la destination */
   private countNearbyPlaces() {
 
-    var response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
-    var results: GooglePlaceApiResult[];
-    var totalplaces : number = 0;
+    let response: GooglePlaceApiPlaceSearchResult = new GooglePlaceApiPlaceSearchResult();
+    let results: GooglePlaceApiResult[];
+    let totalplaces : number = 0;
 
     //récuperer tous les lieux proches    
     this.googlePlaceApiService.getNearbySearchPlaces(this.trajet.userDestination, 0)
@@ -250,8 +264,8 @@ export class EstimationPage {
   {
     
     /* //Controle doublon
-      var theDataToAdd = userName;
-      var ref = new Firebase('https://SampleChat.firebaseIO-demo.com/users/' + theDataToAdd);
+      let theDataToAdd = userName;
+      let ref = new Firebase('https://SampleChat.firebaseIO-demo.com/users/' + theDataToAdd);
       this.favoriteplacesDBURL.on('value', function(snapshot) {
         if (snapshot.exists())
             alert ("exist");
@@ -288,10 +302,6 @@ export class EstimationPage {
       }
       return post;
     });
-  }
-
-  private getCurrentLocation() {
-    this.ionicNativeService.loadCurrentLocationOn(this.trajet.userPosition);
   }
 
   /**

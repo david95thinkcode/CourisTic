@@ -33,8 +33,6 @@ export class HomePage {
   {      
       this.place_to_search = "";
       this.Initialise();
-      this.getCurrentPosition();
-      //console.log(this.currentLocation);
   }
 
 /**
@@ -76,7 +74,6 @@ export class HomePage {
     else {
       
       this.navCtrl.push(EstimationPage, {
-        currentLocation: this.currentLocation,
         userChoice: choice
       });
 
@@ -94,7 +91,7 @@ export class HomePage {
   }
 
   public getCurrentPosition() {        
-    this.ionicNativeService.loadCurrentLocationOn(this.currentLocation);
+    //this.ionicNativeService.loadCurrentLocationOn(this.currentLocation);
   }
 
 }
