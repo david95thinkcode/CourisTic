@@ -12,19 +12,19 @@ export class FavorisPage {
 
   favoriteplaces: FirebaseListObservable<any>; 
    
-constructor(public navCtrl: NavController, public toastCtrl: ToastController, private navParams: NavParams, af: AngularFireDatabase) {
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController, private navParams: NavParams, af: AngularFireDatabase) {
 
-    //On fait la liaison entre firebase et notre variable favoriteplaces
-    this.favoriteplaces = af.list('/favoriteplaces');  
-}
+      //On fait la liaison entre firebase et notre variable favoriteplaces
+      this.favoriteplaces = af.list('/favoriteplaces');  
+  }
 
   /**
    * Retire un lieu des favoris
    */
   public remove(firebasePlaceId: string) 
   {
-    let successMessage: string = "Supprimé avec succès ";
-    let failureMessage: string = "Echec de suppresion !";
+    let successMessage: string = "Retiré avec succès ";
+    let failureMessage: string = "Impossible à retirer !";
     
     this.favoriteplaces.remove(firebasePlaceId)
     .then( succes => this.presentToast(successMessage))
