@@ -13,6 +13,7 @@ import { AidePage }                   from '../pages/aide/aide';
 import { RecherchePage }              from '../pages/recherche/recherche';
 import { ListeLieuxProchesPage  }     from '../pages/listelieuxproches/listelieuxproches';
 import { DisconnectedPage  }          from '../pages/disconnected/disconnected';
+import { NotFoundPage  }              from '../pages/notfound/notfound';
 
 //Ionic native
 import { StatusBar }                  from '@ionic-native/status-bar';
@@ -49,7 +50,8 @@ export const firebaseConfig = {
     AidePage,
     RecherchePage,
     ListeLieuxProchesPage,
-    DisconnectedPage
+    DisconnectedPage,
+    NotFoundPage
   ],
   imports: [
     HttpModule,
@@ -70,7 +72,8 @@ export const firebaseConfig = {
     AidePage,
     RecherchePage,
     ListeLieuxProchesPage,
-    DisconnectedPage
+    DisconnectedPage,
+    NotFoundPage
   ],
   providers: [
     GooglePlaceApiService,
