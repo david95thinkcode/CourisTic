@@ -37,19 +37,19 @@
       <ion-list *ngSwitchCase="'description'">
         <ion-card>
           <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
-        <ion-card-content>
-          {{trajet.userDestination.name}} est un site historique qui ...
-          {{ trajet.userDestination.description }}
-        </ion-card-content>
-        <ion-row>
-          <ion-col>
-            <button ion-button icon-left clear small (tap)="addToFavorites(trajet.userDestination)">
-              <ion-icon name="heart"></ion-icon>
-              <div>Favoris</div>
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-card>
+          <ion-card-content>
+            {{trajet.userDestination.name}} est un site historique qui ...
+            {{ trajet.userDestination.description }}
+          </ion-card-content>
+          <ion-row>
+            <ion-col>
+              <button ion-button icon-left clear small (tap)="addToFavorites(trajet.userDestination)">
+                <ion-icon name="heart"></ion-icon>
+                <div>Favoris</div>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-card>
       </ion-list>
 
       <ion-list *ngSwitchCase="'estimation'">
@@ -222,9 +222,8 @@
   </div>
 
   <ng-template #introuvable>
-    <div class="trajet-false">
-      <h1>Itinéraire introuvable !</h1>
-    </div>
+    <page-notfound></page-notfound>
   </ng-template>
+  
   
 </ion-content>
