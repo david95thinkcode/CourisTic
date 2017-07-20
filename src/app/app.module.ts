@@ -12,6 +12,7 @@ import { EstimationPage }             from '../pages/estimation/estimation';
 import { AidePage }                   from '../pages/aide/aide';
 import { RecherchePage }              from '../pages/recherche/recherche';
 import { ListeLieuxProchesPage  }     from '../pages/listelieuxproches/listelieuxproches';
+import { DisconnectedPage  }          from '../pages/disconnected/disconnected';
 
 //Ionic native
 import { StatusBar }                  from '@ionic-native/status-bar';
@@ -22,7 +23,7 @@ import { Network }                    from '@ionic-native/network';
 import { HttpModule  }                from "@angular/http";
 import {  AngularFireModule }         from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuthModule, AngularFireAuth }         from 'angularfire2/auth';
 
 import { GooglePlaceApiService }      from "../services/googleplaceapi.service";
 import { GoogleMapsApiService }       from "../services/googlemapsapi.service";
@@ -47,7 +48,8 @@ export const firebaseConfig = {
     EstimationPage,
     AidePage,
     RecherchePage,
-    ListeLieuxProchesPage
+    ListeLieuxProchesPage,
+    DisconnectedPage
   ],
   imports: [
     HttpModule,
@@ -67,7 +69,8 @@ export const firebaseConfig = {
     EstimationPage,
     AidePage,
     RecherchePage,
-    ListeLieuxProchesPage
+    ListeLieuxProchesPage,
+    DisconnectedPage
   ],
   providers: [
     GooglePlaceApiService,
