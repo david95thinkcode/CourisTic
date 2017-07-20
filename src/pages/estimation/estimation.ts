@@ -1,6 +1,6 @@
 import { Component }                           from '@angular/core';
-import { NavController, NavParams, AlertController }            from 'ionic-angular';
-import { ToastController }                     from 'ionic-angular';
+import { NavController, NavParams }            from 'ionic-angular';
+import { ToastController, AlertController }    from 'ionic-angular';
 import {FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
 
 import { ListeLieuxProchesPage  }              from '../../pages/listelieuxproches/listelieuxproches';
@@ -257,7 +257,6 @@ export class EstimationPage {
 
   
   /** ENREGISTRE LE LIEU DANS FIREBASE
-   * 
    * @param favoritePlace Le lieu à enregistrer
    */
   public addToFavorites(favoritePlace: GooglePlaceApiResult)
@@ -273,7 +272,7 @@ export class EstimationPage {
             alert ("not exist");
       });
     */
-    let successtoastMessage: string = favoritePlace.name + " ajouté auxfavoris";
+    let successtoastMessage: string = favoritePlace.name + " ajouté aux favoris";
     let failuretoastMessage: string = "Echec d'ajout " + favoritePlace.name + " aux favoris !";
     
     this.favoriteplaces.push({
@@ -287,6 +286,8 @@ export class EstimationPage {
 
 /** AJOUTE UN LIEU AU FAVORIS SI INEXISTANT DANS LA LISTE DES FAVORIS ; RETIRE SI EXISTANT */
   public toggleStar(postRef, uid) {
+    //Methode pas encore au point
+    //TODO: corriger le nécessaire
     postRef.transaction(function(post) {
       if (post) {
         if (post.stars && post.stars[uid]) {
@@ -315,11 +316,12 @@ export class EstimationPage {
     toast.present();
   }
 
+  /** Pour rafraichir la page */
   public doRefresh(refresher) {
-    console.log('Begin async operation', refresher);
+    console.log('Rafraichissement en cours...', refresher);
 
     setTimeout(() => {
-      console.log('Async operation has ended');
+      console.log('Rafraichissement terminé !');
       refresher.complete();
     }, 2000);
   }
