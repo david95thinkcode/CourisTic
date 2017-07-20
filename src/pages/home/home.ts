@@ -11,10 +11,6 @@ import { IonicNativeGeolocation }               from '../../models/ionicnative-g
 import { Network }                              from '@ionic-native/network';
 import { Geolocation }                          from '@ionic-native/geolocation';
 
-//RxJS
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html' 
@@ -32,34 +28,36 @@ export class HomePage {
   
   constructor(private toastCtrl: ToastController, private network: Network, public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
   {  
-    this._connectedToInternet = true;
-    this.Initialise();
+    this.checkConnection();
 
-    //Contrôler l'état de la connection
-    //Si oui, la variable < __connectedToInternet > est mise à TRUE
-    //sinon, elle est maintenue à FALSE
+    if (this._connectedToInternet) {
+      this.Initialise(); 
+    }
+    else { console.log("Non connecté à Internet"); }
+       
+  }
 
-      // watch network for a connection
-    let connectSubscription = this.network.onConnect().subscribe(() => {
-      console.log('network connected!');
-      // We just got a connection but we need to wait briefly
-      // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
-      setTimeout(() => {
-        if (this.network.type === 'wifi') {
-          console.log('we got a wifi connection, woohoo!');
-        }
-        else{
-          console.log("We don't know your network connection")
-        }
-      }, 1000);
-    });
+  /** VERIFIE LA CONNEXION INTERNET */
+  public checkConnection() {
+    /**
+     * Contrôler l'état de la connection
+     * Si connecté, la variable < _connectedToInternet > est mise à TRUE
+     * sinon, elle est maintenue à FALSE
+     */
+    let networkState = this.network.type;
+    if (networkState == 'none') {
+      this._connectedToInternet = false;
+    }
+    else {
+      this._connectedToInternet = true;
+    }
   }
 
 /**
  * Initialise toutes les variables de la page
 */
   private Initialise() {
+    
     this.place_to_search = "";
     this.googlePlaceApiService.getDetails("")
     .then(lesdetails => 

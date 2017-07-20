@@ -9,7 +9,8 @@
 
 <ion-content>
   
-  <h1 text-center class="principal-text"> Où voulez-vous visiter ?</h1>
+  <div *ngIf="_connectedToInternet; else disconnected">
+    <h1 text-center class="principal-text"> Où voulez-vous visiter ?</h1>
  
     <ion-item padding>
       <!--<ion-label>Lieu à rechercher</ion-label>-->
@@ -23,17 +24,24 @@
       </button>
     </div>
     
-<!--
-  <ion-card>
-     <img [src]="picture_url" (tap)="showEstimation(result)"/> 
-    <div class="card-title" *ngIf="result">{{ result.name }}</div>
-    <div class="card-subtitle">41 Listings</div> 
-  </ion-card>
--->
-  <!--Bouton flottant -->
-  <ion-fab bottom center>
-    <button ion-fab>
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-fab>
+    <!--
+      <ion-card>
+        <img [src]="picture_url" (tap)="showEstimation(result)"/> 
+        <div class="card-title" *ngIf="result">{{ result.name }}</div>
+        <div class="card-subtitle">41 Listings</div> 
+      </ion-card>
+    -->
+    <!--Bouton flottant -->
+    <ion-fab bottom center>
+      <button ion-fab>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab>
+  </div>
+
+  <ng-template #disconnected>
+     <page-disconnected ></page-disconnected>
+  </ng-template>
+ 
+  
 </ion-content>
