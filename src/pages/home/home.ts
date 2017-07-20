@@ -1,5 +1,5 @@
 import { Component }                            from '@angular/core';
-import { LoadingController }                    from 'ionic-angular';
+import { LoadingController,ToastController }    from 'ionic-angular';
 import { NavController }                        from 'ionic-angular';
 import { RecherchePage  }                       from '../../pages/recherche/recherche';
 import { EstimationPage  }                      from '../../pages/estimation/estimation';
@@ -8,7 +8,6 @@ import { IonicNativeService }                   from '../../services/ionicnative
 import { GooglePlaceApiGlobal }                 from '../../models/googleplaceapi-global.model';
 import { GooglePlaceApiResult   }               from '../../models/googleplaceapi-result.model';
 import { IonicNativeGeolocation }               from '../../models/ionicnative-geolocation.model';
-
 import { Network }                              from '@ionic-native/network';
 import { Geolocation }                          from '@ionic-native/geolocation';
 
@@ -23,19 +22,23 @@ import 'rxjs/add/operator/map';
 
 export class HomePage {
 
+  _connectedToInternet: boolean = false;
   currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
   mainImageIndex: number = 1;  
   detail: GooglePlaceApiGlobal = new GooglePlaceApiGlobal();
   result: GooglePlaceApiResult = new GooglePlaceApiResult();
   picture_url: string;
   place_to_search: string;
+  
+  constructor(private toastCtrl: ToastController, private network: Network, public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
+  {  
+    this._connectedToInternet = true;
+    this.Initialise();
 
-  constructor(private network: Network, public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
-  {      
-      this.place_to_search = "";
-      this.Initialise();
+    //Contrôler l'état de la connection
+    //Si oui, la variable < __connectedToInternet > est mise à TRUE
+    //sinon, elle est maintenue à FALSE
 
-      console.log(network);
       // watch network for a connection
     let connectSubscription = this.network.onConnect().subscribe(() => {
       console.log('network connected!');
@@ -57,7 +60,7 @@ export class HomePage {
  * Initialise toutes les variables de la page
 */
   private Initialise() {
-
+    this.place_to_search = "";
     this.googlePlaceApiService.getDetails("")
     .then(lesdetails => 
     {
@@ -75,11 +78,22 @@ export class HomePage {
 
   /**Lance une recherche de lieux */
   public searchPlaces() {
+    //On contrôle si l'utilisateur a tapé un lieu à rechercher
+    //Si oui on lance la recherche
+    //Si non on lui affiche un toast
+    //La variable servant à faire ce contrôle est : place_to_search
+    this.place_to_search = this.place_to_search.trim();
+    if (this.place_to_search.length != 0 ) {
+      this.navCtrl.push(RecherchePage, {
+        query: this.place_to_search
+      });
+      this.presentLoading();
+    }
+    else {
+      let message: string = "Veuillez entrer un lieu à chercher";
+      this.presentToast(message);
+    }
     
-    this.navCtrl.push(RecherchePage, {
-      query: this.place_to_search
-    });
-    this.presentLoading();
   }
 
   public showEstimation(choice : GooglePlaceApiResult) {
@@ -94,13 +108,13 @@ export class HomePage {
       this.navCtrl.push(EstimationPage, {
         userChoice: choice
       });
-
-    }    
-    
+    }        
   } 
 
+  //FONCTION RELATIVES A L'UX
+
   /** AFFICHE LE LOADER */
-  public presentLoading() {
+  presentLoading() {
     let loader = this.loadingCtrl.create({
       content: "Recherche en cours...",
       duration: 2000
@@ -108,8 +122,13 @@ export class HomePage {
     loader.present();
   }
 
-  public getCurrentPosition() {        
-    //this.ionicNativeService.loadCurrentLocationOn(this.currentLocation);
+  presentToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
   }
 
+  
 }
