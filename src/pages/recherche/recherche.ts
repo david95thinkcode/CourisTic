@@ -1,5 +1,6 @@
 import { Component }                           from '@angular/core';
 import { NavController, NavParams }            from 'ionic-angular';
+import { Network }                             from '@ionic-native/network';
 
 import { EstimationPage  }                     from '../../pages/estimation/estimation';
 
@@ -20,15 +21,15 @@ export class RecherchePage {
   result: GooglePlaceApiResult = new GooglePlaceApiResult();
   results: GooglePlaceApiResult[];
   mainImageIndex: number = 1;
-  query: string;
-  
+  query: string;  
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public googlePlaceApiService: GooglePlaceApiService) 
+  constructor(private network: Network, public navCtrl: NavController, public navParams: NavParams, public googlePlaceApiService: GooglePlaceApiService) 
   {
     this.query = navParams.get('query');
     this.Initialise();
- 
   }
+
+
 
 /**
  * Initialise toutes les variables de la page

@@ -1,15 +1,16 @@
-import { Component }                from '@angular/core';
-import { LoadingController }        from 'ionic-angular';
-import { NavController }            from 'ionic-angular';
-import { RecherchePage  }           from '../../pages/recherche/recherche';
-import { EstimationPage  }          from '../../pages/estimation/estimation';
-import { GooglePlaceApiService }    from '../../services/googleplaceapi.service';
-import { IonicNativeService }       from '../../services/ionicnative.service';
-import { GooglePlaceApiGlobal }     from '../../models/googleplaceapi-global.model';
-import { GooglePlaceApiResult   }   from '../../models/googleplaceapi-result.model';
-import { IonicNativeGeolocation }   from '../../models/ionicnative-geolocation.model';
+import { Component }                            from '@angular/core';
+import { LoadingController }                    from 'ionic-angular';
+import { NavController }                        from 'ionic-angular';
+import { RecherchePage  }                       from '../../pages/recherche/recherche';
+import { EstimationPage  }                      from '../../pages/estimation/estimation';
+import { GooglePlaceApiService }                from '../../services/googleplaceapi.service';
+import { IonicNativeService }                   from '../../services/ionicnative.service';
+import { GooglePlaceApiGlobal }                 from '../../models/googleplaceapi-global.model';
+import { GooglePlaceApiResult   }               from '../../models/googleplaceapi-result.model';
+import { IonicNativeGeolocation }               from '../../models/ionicnative-geolocation.model';
 
-import { Geolocation }              from    '@ionic-native/geolocation';
+import { Network }                              from '@ionic-native/network';
+import { Geolocation }                          from '@ionic-native/geolocation';
 
 //RxJS
 import 'rxjs/add/operator/toPromise';
@@ -29,10 +30,27 @@ export class HomePage {
   picture_url: string;
   place_to_search: string;
 
-  constructor(public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
+  constructor(private network: Network, public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
   {      
       this.place_to_search = "";
       this.Initialise();
+
+      console.log(network);
+      // watch network for a connection
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+      // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+      setTimeout(() => {
+        if (this.network.type === 'wifi') {
+          console.log('we got a wifi connection, woohoo!');
+        }
+        else{
+          console.log("We don't know your network connection")
+        }
+      }, 1000);
+    });
   }
 
 /**
