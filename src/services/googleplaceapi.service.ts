@@ -56,7 +56,7 @@ export class GooglePlaceApiService {
      * ############################## ########
      */
     getTextSearchPlaces(query: string): Promise<GooglePlaceApiPlaceSearchResult> {
-                
+
         const parameters = `query=${query}&key=${this.apikey}`;
         const url: string = this.baseURLTextSearch+this.output+parameters;
         
@@ -134,23 +134,45 @@ export class GooglePlaceApiService {
     /**Retourne l'URL d'une photo dont la référence a été passé en paramètre
      * Learn more on : https://developers.google.com/places/web-service/photos
      * @param photo_reference Référence de la photo à afficher 
+     * @param format Format de la photo
      */
-    getPhotoURL(photo_reference: string ): string  {  
+    getPhotoURL(photo_reference: string, format: string ): string  {  
+     /** Valeur possibles du paramètre < format >
+        * Si format vaut : "small" alors l'url récupéré est celle d'une photo de taille minimale
+        * Si format vaut : "medium" alors l'url récupéré est celle d'une photo de taille minimale
+        * Si format vaut : "big" alors l'url récupéré est celle d'une photo de taille minimale
+     */
+    
+        var maxWidth : number = 0;
+        var maxHeight : number = 0;
+        var picture_URL: string;       
 
-        //Taille par défaut à laquelle l'image sera reçue      
-        var maxWidth : number = 700;
-        var maxHeight : number = 600;
-        var picture_URL: string;
+        switch (format) {
+            case "small":
+                maxWidth = 400;
+                maxHeight = 300;
+                break;
+            case "medium":
+                maxWidth = 700;
+                maxHeight = 600;
+                break;
+            case "big":
+                maxWidth = 900;
+                maxHeight = 800;
+                break;
+            default:
+                break;
+        }
 
-        if ((photo_reference != null) || (photo_reference != "")) {
-            
-        }
-        else  {
-            console.log("Reférence de la photo non reçu");
-        }
+        if ((photo_reference != null) || (photo_reference != "")) { }
+        else  { console.log("Reférence de la photo non reçu"); }
+        
+        //Formation de l'URL pour la requête de récupération d'image
         const parameters = `maxwidth=${maxWidth}&maxheight=${maxHeight}&photoreference=${photo_reference}&key=${this.apikey}`;
         picture_URL = this.baseURLPlacePhoto+parameters;
         
         return picture_URL;
     }
+
+    
 }

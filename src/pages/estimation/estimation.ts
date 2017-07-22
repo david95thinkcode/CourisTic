@@ -1,4 +1,5 @@
 import { Component }                           from '@angular/core';
+import { Network }                             from '@ionic-native/network';
 import { NavController, NavParams }            from 'ionic-angular';
 import { ToastController, AlertController }    from 'ionic-angular';
 import {FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
@@ -30,45 +31,56 @@ import { Restaurant }                          from '../../models/app/restaurant
 
 export class EstimationPage {
 
+  _kilometerPrice: number;
+  _savedPictureURL:string;
+  _connectedToInternet: boolean = false;
+  _devise: string;
   cout_trajet: number;
   nombreHotel: number;
   nombreRestaurant: number;
-  trajet: Trajet = new Trajet();
-  rows: GoogleMapsApiRow[];
+  //Objects
+  trajet: Trajet = new Trajet();  
   reponse: GoogleMapsApiGlobal = new GoogleMapsApiGlobal();
+  rows: GoogleMapsApiRow[];
   array_Hotel: Array<Hotel>;
-  array_restaurant: Array<Restaurant>;
-  //Liste de lieux favoris
+  array_restaurant: Array<Restaurant>;  
   favoriteplaces: FirebaseListObservable<any>;
-  //favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
   
+  //favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
   //Page du segment choisi par défaut
   choice: string = "estimation";
-
   //Pour l'alert
   alertCtrl: AlertController;
-
   
- constructor(public toastCtrl: ToastController, af: AngularFireDatabase, private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams, alertCtrl: AlertController)
+ constructor(private network: Network, public toastCtrl: ToastController, af: AngularFireDatabase, private ionicNativeService: IonicNativeService, private navCtrl: NavController, private googlePlaceApiService: GooglePlaceApiService, private googleMapsApiService: GoogleMapsApiService, public navParams: NavParams, alertCtrl: AlertController)
  {
+  
    this.trajet.userDestination = navParams.get('userChoice');
    this.alertCtrl = alertCtrl;
-   
-   //Ci-dessous on fait le lien entre notre base sur firebase et notre variable favoritesplaces
-   this.favoriteplaces = af.list('/favoriteplaces');
-   
-   this.Initialise();
-   this.setDistanceDuration();
-   //On décide si l'on doit compter ou pas
-   if (this.trajet.itineraire = true ) 
-   {
-    this.countNearbyPlaces(); 
+   this.checkConnection();
+
+    if (this._connectedToInternet) {
+      //Ci-dessous on fait le lien entre notre base sur firebase et notre variable favoritesplaces
+      this.favoriteplaces = af.list('/favoriteplaces');
+      this.Initialise();
+      this.setDistanceDuration();
+      //On décide si l'on doit compter ou pas
+      if (this.trajet.itineraire = true ) 
+      {
+        console.log(this.trajet.userDestination)
+        this.refillDestination();
+        console.log(this.trajet.userDestination)
+        this.countNearbyPlaces(); 
+        this.getGlobalPrice();
+      }  
+
    }
-   this.getGlobalPrice();
+    else { console.log("Non connecté à Internet"); }
  }
 
   private Initialise() {
-
+    this._devise = " Francs CFA"
+    this._kilometerPrice = 25; //Un kilomètre coute 25 FCFA
     this.trajet.itineraire = false;
     this.trajet.cout_hebergement = 0;
     this.trajet.cout_restauration = 0;
@@ -84,7 +96,35 @@ export class EstimationPage {
     this.nombreRestaurant = 0;
     this.array_Hotel = [];
     this.array_restaurant = []; 
+    console.log("initialisation : " + this.cout_trajet);
     this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
+  }
+
+  /**Fill the userdestination object with all details from Google place api  */
+  private refillDestination() {
+    this._savedPictureURL = this.trajet.userDestination.url_to_main_Image;
+    this.googlePlaceApiService.getDetails(this.trajet.userDestination.place_id)
+      .then(fetchedDetails => {
+        this.trajet.userDestination = fetchedDetails.result as GooglePlaceApiResult;
+        this.trajet.userDestination.url_to_main_Image = this._savedPictureURL;
+      }) 
+      .catch(error => console.log("Fail to refill Destination object"));
+  }
+
+  /** VERIFIE LA CONNEXION INTERNET */
+  public checkConnection() {
+    /**
+     * Contrôler l'état de la connection
+     * Si connecté, la variable < _connectedToInternet > est mise à TRUE
+     * sinon, elle est maintenue à FALSE
+     */
+    let networkState = this.network.type;
+    if (networkState == 'none') {
+      this._connectedToInternet = false;
+    }
+    else {
+      this._connectedToInternet = true;
+    }
   }
 
   /** EFFECTUE DES OPERATIONS POUR ATTRIBUER LA DUREE ET LA DISTANCE
@@ -125,10 +165,10 @@ export class EstimationPage {
           else 
           {
             this.trajet.itineraire = true;         
-            console.log(this.trajet.userPosition);
             //Récupération et affectation des données "distance" et "durée" au trajet
             this.trajet.distance_trajet = this.rows[0].elements[0].distance;
             this.trajet.duree_trajet = this.rows[0].elements[0].duration;
+            this.getGlobalPrice();
           }
 
         /* //OBSERVATION 
@@ -141,13 +181,11 @@ export class EstimationPage {
           console.log("Destination : "+ this.trajet.userDestination);
           */
         })
-        .catch(error => console.log('getDistanceMatrix() error :: ' + error));
+        .catch(error => console.log('getDistanceMatrix() error : ' + error));
       }
 
     })
-    .catch(error => {
-      console.log("ERREUR TROUVEE");
-    })
+    .catch(error => {  console.log("ERREUR TROUVEE"); })
     
   }
 
@@ -238,6 +276,13 @@ export class EstimationPage {
    * - cout de restauration
    */
   private getGlobalPrice() {
+    //La valeur de la distance est en mètre
+    //Donc pour calculer le prix au kilomètre, on converti 
+    //la distance en kilomètre multiplié par le prix du km
+    this.trajet.cout_transport = this._kilometerPrice * (this.trajet.distance_trajet.value / 1000);
+    //TODO: chercher un moyen de récupérer les deux couts ci-dessous
+    //this.trajet.cout_hebergement = 0;
+    //this.trajet.cout_restauration = 0;
     this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
   }
 
@@ -260,8 +305,7 @@ export class EstimationPage {
    * @param favoritePlace Le lieu à enregistrer
    */
   public addToFavorites(favoritePlace: GooglePlaceApiResult)
-  {
-    
+  {    
     /* //Controle doublon
       let theDataToAdd = userName;
       let ref = new Firebase('https://SampleChat.firebaseIO-demo.com/users/' + theDataToAdd);
@@ -278,32 +322,37 @@ export class EstimationPage {
     this.favoriteplaces.push({
       placeid: favoritePlace.place_id,
       name: favoritePlace.name,
+      vinicity: favoritePlace.vicinity,
+      types: favoritePlace.types,
+      formatted_address: favoritePlace.formatted_address,
+      geometry: favoritePlace.geometry,
       picture_URL: favoritePlace.url_to_main_Image            
     });
     
     this.presentToast(successtoastMessage);
   }
 
-/** AJOUTE UN LIEU AU FAVORIS SI INEXISTANT DANS LA LISTE DES FAVORIS ; RETIRE SI EXISTANT */
-  public toggleStar(postRef, uid) {
-    //Methode pas encore au point
-    //TODO: corriger le nécessaire
-    postRef.transaction(function(post) {
-      if (post) {
-        if (post.stars && post.stars[uid]) {
-          post.starCount--;
-          post.stars[uid] = null;
-        } else {
-          post.starCount++;
-          if (!post.stars) {
-            post.stars = {};
+  /** AJOUTE UN LIEU AU FAVORIS SI INEXISTANT DANS LA LISTE DES FAVORIS ; RETIRE SI EXISTANT 
+    public toggleStar(postRef, uid) {
+      //Methode pas encore au point
+      //TODO: corriger le nécessaire
+      postRef.transaction(function(post) {
+        if (post) {
+          if (post.stars && post.stars[uid]) {
+            post.starCount--;
+            post.stars[uid] = null;
+          } else {
+            post.starCount++;
+            if (!post.stars) {
+              post.stars = {};
+            }
+            post.stars[uid] = true;
           }
-          post.stars[uid] = true;
         }
-      }
-      return post;
-    });
-  }
+        return post;
+      });
+    }
+  */
 
   /**
    * Permet d'afficher un toast 
