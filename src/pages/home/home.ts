@@ -18,19 +18,21 @@ import { Geolocation }                          from '@ionic-native/geolocation'
 
 export class HomePage {
 
-  _connectedToInternet: boolean = false;
-  currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
-  mainImageIndex: number = 1;  
-  detail: GooglePlaceApiGlobal = new GooglePlaceApiGlobal();
-  result: GooglePlaceApiResult = new GooglePlaceApiResult();
   picture_url: string;
   place_to_search: string;
+  mainImageIndex: number = 1;  
+  _connectedToInternet: boolean = false;
+  detail: GooglePlaceApiGlobal = new GooglePlaceApiGlobal();
+  result: GooglePlaceApiResult = new GooglePlaceApiResult();
+  currentLocation: IonicNativeGeolocation = new IonicNativeGeolocation();
+ 
   
   constructor(private toastCtrl: ToastController, private network: Network, public loadingCtrl: LoadingController, public geolocation: Geolocation, public navCtrl: NavController, public googlePlaceApiService: GooglePlaceApiService, public ionicNativeService: IonicNativeService)
   {  
     this.checkConnection();
 
-    if (this._connectedToInternet) {
+    if (this._connectedToInternet) 
+    {
       this.Initialise(); 
     }
     else { console.log("Non connecté à Internet"); }
@@ -56,8 +58,12 @@ export class HomePage {
 /**
  * Initialise toutes les variables de la page
 */
-  private Initialise() {
-    
+  private Initialise() { }
+
+  private loadDefaultPlace(){
+    //Nous allons recevoir les détails d'un lieu par défaut
+    let picDimension: string = "small";
+
     this.place_to_search = "";
     this.googlePlaceApiService.getDetails("")
     .then(lesdetails => 
@@ -69,7 +75,7 @@ export class HomePage {
       //On définit l'index de l'image principale de notre lieu
       this.result.reference_to_main_Image = this.result.photos[this.mainImageIndex].photo_reference;
       //On récupère l'url de l'image principale
-      this.picture_url = this.googlePlaceApiService.getPhotoURL(this.result.reference_to_main_Image);
+      this.picture_url = this.googlePlaceApiService.getPhotoURL(this.result.reference_to_main_Image, picDimension );
       
     });
   }

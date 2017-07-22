@@ -1,9 +1,7 @@
 import { Component }                           from '@angular/core';
 import { NavController, NavParams }            from 'ionic-angular';
 import { Network }                             from '@ionic-native/network';
-
 import { EstimationPage  }                     from '../../pages/estimation/estimation';
-
 import { GooglePlaceApiService }               from '../../services/googleplaceapi.service';
 import { GooglePlaceApiGlobal }                from '../../models/googleplaceapi-global.model';
 import { GooglePlaceApiResult   }              from '../../models/googleplaceapi-result.model';
@@ -30,12 +28,13 @@ export class RecherchePage {
   }
 
 
-
 /**
  * Initialise toutes les variables de la page
  */
   private Initialise() {
     
+    let dimension: string = "small";
+
     if ((this.query == null) || (this.query == "")) {
       console.log("Aucun lieu à rechercher entré");
     }
@@ -67,21 +66,15 @@ export class RecherchePage {
           //Photos[] n'est pas vide
           else {
             result.reference_to_main_Image = result.photos[secureIndexForPhoto].photo_reference;
-            result.url_to_main_Image = this.googlePlaceApiService.getPhotoURL(result.reference_to_main_Image);
+            result.url_to_main_Image = this.googlePlaceApiService.getPhotoURL(result.reference_to_main_Image, dimension);
           }
-         
-        });
-                
+        });                
       });
-
-    }   
-
+    }
   }
 
   /** Ouvre la page d'estimation de l'application
-   * et lui envoie les paramètres nécessaires qui sont :
-   * la lieu choisi par l'utilisateur
-   * la position actuelle du téléphone (ou de l'utiliateur)
+   * et lui envoie le lieu choisi par l'utilisateur
   */
   public showEstimation(choice : GooglePlaceApiResult) {
     
@@ -90,7 +83,8 @@ export class RecherchePage {
       console.log("Destination choisie null");
     }
 
-    else {          
+    else {       
+      console.log(choice);
       this.navCtrl.push(EstimationPage, {
         userChoice: choice
       });

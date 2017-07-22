@@ -70,7 +70,7 @@ export class ListeLieuxProchesPage {
           //Photos[] n'est pas vide
           else {
             result.reference_to_main_Image = result.photos[secureIndexForPhoto].photo_reference;
-            result.url_to_main_Image = this.googlePlaceApiService.getPhotoURL(result.reference_to_main_Image);
+            result.url_to_main_Image = this.googlePlaceApiService.getPhotoURL(result.reference_to_main_Image, "small");
           }
          
         });

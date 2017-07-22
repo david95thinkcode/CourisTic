@@ -27,8 +27,7 @@ export class GooglePlaceApiResult {
 
     url: string;
     website: string;
-    
-    //Objects
+
     geometry : GooglePlaceApiGeometry;
     adress_components: GooglePlaceApiAdressComponent[];
     photos: GooglePlaceApiPhoto[];
@@ -37,30 +36,4 @@ export class GooglePlaceApiResult {
     reference_to_main_Image: string;
     url_to_main_Image: string;
 
-    /*
-    constructor (private googlePlaceApiService?: GooglePlaceApiService) {
-
-        this.initialisePicture();
-    }
-
-   
-    public initialisePicture() {
-        
-        const secureIndexForPhoto: number = 0;
-          
-          //Cas ou l'image nexiste pas (photos[] = null ==> est vide)
-          if (this.photos == null) 
-          {
-            //on utilise une image de notre dossier
-            this.url_to_main_Image = "assets/img/no_image.png";
-          }
-
-          //Photos[] n'est pas vide
-          else {
-            this.reference_to_main_Image = this.photos[secureIndexForPhoto].photo_reference;
-            this.url_to_main_Image = this.googlePlaceApiService.getPhotoURL(this.reference_to_main_Image);
-          }
-
-    }
-    */
 }
