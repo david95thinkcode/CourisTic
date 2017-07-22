@@ -3,12 +3,12 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Mes favoris</ion-title>
+    <ion-title>Favoris</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3 text-center>Favoris</h3>
+<ion-content>
+  <h3 text-center>Lieux marqués comme favoris</h3>
 
 <!--
   <ion-list>
@@ -17,20 +17,17 @@
     </ion-item>
   </ion-list>
 -->
-  <ion-card *ngFor="let place of favoriteplaces | async">
-    <img  [src]="place.picture_URL"/>
-    <ion-card-content>
-      <ion-card-title>
-        {{ place.name }}
-        </ion-card-title>
-      <p>
-        description
-      </p>
-      <button ion-button icon-left clear small (tap)="remove(place.$key)">
-        <ion-icon name="heart"></ion-icon>
-        <div>Favoris</div>
+
+  <ion-list>
+    <ion-item *ngFor="let place of favoriteplaces | async">
+        <ion-icon name="pin" item-start (tap)="showEstimation(place)"></ion-icon>
+        <h2>{{ place.name }}</h2>
+        <p> {{ place.formatted_address }}</p>
+      <button ion-button clear item-end (tap)="remove(place.$key)">
+        Retirer
       </button>
-  </ion-card-content>
-</ion-card>
+    </ion-item>
+  </ion-list>
+
 
 </ion-content>

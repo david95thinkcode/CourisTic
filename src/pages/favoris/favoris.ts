@@ -2,6 +2,8 @@ import { Component }                            from '@angular/core';
 import { NavController, ToastController }       from 'ionic-angular';
 import { NavParams }                            from 'ionic-angular';
 import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
+import { GooglePlaceApiResult   }              from '../../models/googleplaceapi-result.model';
+import { EstimationPage  }                     from '../../pages/estimation/estimation';
 
 @Component({
   selector: 'page-favoris',
@@ -17,6 +19,24 @@ export class FavorisPage {
       //On fait la liaison entre firebase et notre variable favoriteplaces
       this.favoriteplaces = af.list('/favoriteplaces');  
   }
+
+  public showEstimation(choice: any) {
+    let place: GooglePlaceApiResult = new GooglePlaceApiResult();
+    place.name = choice.name;
+    place.place_id = choice.placeid;
+    place.url_to_main_Image = choice.picture_URL;
+    
+    //Destination valide ???
+    if (choice == null){
+      console.log("Favoris choisi null");
+    }
+    else {       
+      console.log(choice);
+      this.navCtrl.push(EstimationPage, {
+        userChoice: choice
+      });
+    }    
+  } 
 
   /**
    * Retire un lieu des favoris
