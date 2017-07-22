@@ -31,199 +31,200 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="trajet-true" *ngIf="trajet.itineraire; else introuvable">
+  <!-- Connecté à Internet -->
+  <div *ngIf="_connectedToInternet; else disconnected">
     
-    <div [ngSwitch]="choice">
-      <ion-list *ngSwitchCase="'description'">
-        <ion-card>
-          <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
-          <ion-card-content>
-            {{trajet.userDestination.name}} est un site historique qui ...
-            {{ trajet.userDestination.description }}
-          </ion-card-content>
-          <ion-row>
-            <ion-col>
-              <button ion-button icon-left clear small (tap)="addToFavorites(trajet.userDestination)">
-                <ion-icon name="heart"></ion-icon>
-                <div>Favoris</div>
-              </button>
-            </ion-col>
-          </ion-row>
-        </ion-card>
-      </ion-list>
-
-      <ion-list *ngSwitchCase="'estimation'">
-        <ion-card >
-          <!--
-          <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
-          -->
-          <ion-card-content class="estimation-resume">
-            <ion-card-title text-center>
-              Pour aller à {{ trajet.userDestination.name }}, prévoyez <br>
-              {{ cout_trajet }}
-            </ion-card-title>
-          </ion-card-content>
-          <ion-row>
-            <ion-col>
-              <button ion-button icon-left clear small (tap)="addToFavorites(trajet.userDestination)">
-                <ion-icon name="heart"></ion-icon>
-                <div>Favoris</div>
-              </button>
-            </ion-col>          
-          </ion-row>
-        </ion-card>
+    <!-- Itinéraire trouvé -->
+    <div class="trajet-true" *ngIf="trajet.itineraire; else introuvable">
       
-        <ion-grid>
-          <ion-row>
+      <div [ngSwitch]="choice">
+        <ion-list *ngSwitchCase="'description'">
+          <ion-card>
+            <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
+            <ion-card-content>
+              {{trajet.userDestination.name}} est un site historique qui ...
+              {{ trajet.userDestination.description }}
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
 
-              <!-- Distance -->
-              <ion-col>
-                <ion-card>
-                  <!--<img src=""/>-->
-                  <ion-card-content text-center>
-                    <ion-card-title>
-                      {{ trajet.distance_trajet.text }}
-                    </ion-card-title>
-                    <p> à parcourir</p>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-
-              <!-- Durée trajet -->
-              <ion-col>
-                <ion-card>
-                <!--  <img src="/ressources/gow.jpg"/>-->
-                  <ion-card-content text-center>
-                    <ion-card-title>
-                      {{ trajet.duree_trajet.text }}
-                    </ion-card-title>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-            </ion-row>
-        </ion-grid>
-
-        <!-- Lieux proches -->
-        <ion-grid>
-          <ion-row>
-              <ion-col>
-                <ion-card (tap)="showHotels()">
-                  <!--<img src=""/>-->
-                  <ion-card-content text-center>
-                    <ion-card-title>
-                      Hotels
-                    </ion-card-title>
-                    <h2> {{ nombreHotel }}</h2>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card (tap)="showRestaurant()">
-                <!--  <img src="/ressources/gow.jpg"/>-->
-                  <ion-card-content text-center>
-                    <ion-card-title>
-                      Restaurants
-                      </ion-card-title>
-                    <h2> {{ nombreRestaurant }} </h2>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-list>
-
-      <ion-list *ngSwitchCase="'details'">
-        <ion-card> <!-- Transport --> 
-          <ion-card-title text-center>
-            Transport : {{ trajet.cout_transport }}
-          </ion-card-title>
-          <ion-card-content>
-            <ion-list radio-group>
-              <ion-item>
-                <ion-icon name="car" item-start></ion-icon>
-                <ion-label>Taxi</ion-label>
-                <ion-radio checked="true" value="go"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-icon name="bus" item-start></ion-icon>
-                <ion-label>Bus</ion-label>
-                <ion-radio value="rust"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-icon name="plane" item-start></ion-icon>
-                <ion-label>Avion</ion-label>
-                <ion-radio value="python" disabled="false"></ion-radio>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-        <ion-card> <!-- Hébergement --> 
-          <ion-card-title text-center>
-            Hébergement : {{ trajet.cout_hebergement }}
-          </ion-card-title>
-          <ion-card-content>
-            <ion-list radio-group>
-              <ion-item>
-                <ion-icon name="sunny" item-start></ion-icon>
-                <ion-label>1 jour</ion-label>
-                <ion-radio checked="true" value="go"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-icon name="moon" item-start></ion-icon>
-                <ion-label>1 nuit</ion-label>
-                <ion-radio value="rust"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-icon name="cloudy-night" item-start></ion-icon>
-                <ion-label>1 jour + 1 nuit</ion-label>
-                <ion-radio value="python"></ion-radio>
-              </ion-item>
-
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-        <ion-card> <!-- Restauration --> 
-          <ion-card-title text-center>
-            Restauration : {{ trajet.cout_restauration}}
-          </ion-card-title>
-          <ion-card-content>
-            <ion-list>
-              <ion-item>
-                <ion-label>Petit déjeuner</ion-label>
-                <ion-checkbox checked="true"></ion-checkbox>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>Déjeuner</ion-label>
-                <ion-checkbox></ion-checkbox>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>Souper</ion-label>
-                <ion-checkbox></ion-checkbox>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>Diner</ion-label>
-                <ion-checkbox></ion-checkbox>
-              </ion-item>
-              
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
+        <ion-list *ngSwitchCase="'estimation'">
+          <ion-card >
+            <!--
+            <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
+            -->
+            <ion-card-content class="estimation-resume">
+              <ion-card-title text-center>
+                Pour aller à {{ trajet.userDestination.name }}, prévoyez <br>
+                {{ cout_trajet }} {{ _devise }}
+              </ion-card-title>
+            </ion-card-content>
+          </ion-card>
         
-      </ion-list>      
-    </div>   
+          <ion-grid>
+            <ion-row>
+
+                <!-- Distance -->
+                <ion-col>
+                  <ion-card>
+                    <!--<img src=""/>-->
+                    <ion-card-content text-center>
+                      <ion-card-title>
+                        {{ trajet.distance_trajet.text }}
+                      </ion-card-title>
+                      <p> à parcourir</p>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+
+                <!-- Durée trajet -->
+                <ion-col>
+                  <ion-card>
+                  <!--  <img src="/ressources/gow.jpg"/>-->
+                    <ion-card-content text-center>
+                      <ion-card-title>
+                        {{ trajet.duree_trajet.text }}
+                      </ion-card-title>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+          </ion-grid>
+
+          <!-- Lieux proches -->
+          <ion-grid>
+            <ion-row>
+                <ion-col>
+                  <ion-card (tap)="showHotels()">
+                    <!--<img src=""/>-->
+                    <ion-card-content text-center>
+                      <ion-card-title>
+                        Hotels
+                      </ion-card-title>
+                      <h2> {{ nombreHotel }}</h2>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+                <ion-col>
+                  <ion-card (tap)="showRestaurant()">
+                  <!--  <img src="/ressources/gow.jpg"/>-->
+                    <ion-card-content text-center>
+                      <ion-card-title>
+                        Restaurants
+                        </ion-card-title>
+                      <h2> {{ nombreRestaurant }} </h2>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+            <button ion-button block large color="red" round (tap)="addToFavorites(trajet.userDestination)">
+              <ion-icon name="heart"></ion-icon>
+              <div>Ajouter au Favoris</div>
+            </button>
+          
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'details'">
+          <ion-card> <!-- Transport --> 
+            <ion-card-title text-center>
+              Transport : {{ trajet.cout_transport }}
+            </ion-card-title>
+            <ion-card-content>
+              <ion-list radio-group>
+                <ion-item>
+                  <ion-icon name="car" item-start></ion-icon>
+                  <ion-label>Taxi</ion-label>
+                  <ion-radio checked="true" value="go"></ion-radio>
+                </ion-item>
+
+                <ion-item>
+                  <ion-icon name="bus" item-start></ion-icon>
+                  <ion-label>Bus</ion-label>
+                  <ion-radio value="rust"></ion-radio>
+                </ion-item>
+
+                <ion-item>
+                  <ion-icon name="plane" item-start></ion-icon>
+                  <ion-label>Avion</ion-label>
+                  <ion-radio value="python" disabled="false"></ion-radio>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+          <ion-card> <!-- Hébergement --> 
+            <ion-card-title text-center>
+              Hébergement : {{ trajet.cout_hebergement }}
+            </ion-card-title>
+            <ion-card-content>
+              <ion-list radio-group>
+                <ion-item>
+                  <ion-icon name="sunny" item-start></ion-icon>
+                  <ion-label>1 jour</ion-label>
+                  <ion-radio checked="true" value="one_day"></ion-radio>
+                </ion-item>
+
+                <ion-item>
+                  <ion-icon name="moon" item-start></ion-icon>
+                  <ion-label>1 nuit</ion-label>
+                  <ion-radio value="one_night"></ion-radio>
+                </ion-item>
+
+                <ion-item>
+                  <ion-icon name="cloudy-night" item-start></ion-icon>
+                  <ion-label>1 jour + 1 nuit</ion-label>
+                  <ion-radio value="DayAndNight"></ion-radio>
+                </ion-item>
+
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+          <ion-card> <!-- Restauration --> 
+            <ion-card-title text-center>
+              Restauration : {{ trajet.cout_restauration}}
+            </ion-card-title>
+            <ion-card-content>
+              <ion-list>
+                <ion-item>
+                  <ion-label>Petit déjeuner</ion-label>
+                  <ion-checkbox checked="true"></ion-checkbox>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Déjeuner</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Souper</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Diner</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+          
+        </ion-list>    
+      </div>   
+
+    </div>
+
+    <!-- Itinéraire non trouvé -->
+    <ng-template #introuvable>
+      <page-notfound></page-notfound>
+    </ng-template>  
 
   </div>
-
-  <ng-template #introuvable>
-    <page-notfound></page-notfound>
-  </ng-template>
   
+  <!-- Non Connecté à Internet -->
+  <ng-template #disconnected>
+     <page-disconnected ></page-disconnected>
+  </ng-template>
   
 </ion-content>
