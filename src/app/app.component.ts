@@ -7,6 +7,7 @@ import { SplashScreen }                 from '@ionic-native/splash-screen';
 import { HomePage }                     from '../pages/home/home';
 import { ListehotelsPage }              from '../pages/listehotels/listehotels';
 import { FavorisPage }                  from '../pages/favoris/favoris';
+import { SitesPage }                    from '../pages/sites/sites';
 import { TrajetsEnregistresPage }       from '../pages/trajetsenregistres/trajetsenregistres';
 import { AidePage }                     from '../pages/aide/aide';
 import { RecherchePage }                from '../pages/recherche/recherche';
@@ -30,10 +31,10 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Accueil', component: HomePage },
-      { title: 'Sites touristiques', component: ListehotelsPage },
+      { title: 'Sites touristiques', component: SitesPage },
       { title: 'Lieux favoris', component: FavorisPage },
       { title: 'Trajets enregistrés', component: TrajetsEnregistresPage },
-      { title: 'A propos', component: AidePage }
+      { title: 'A proposr', component: AidePage }
     ];
 
   }
