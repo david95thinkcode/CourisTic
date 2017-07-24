@@ -34,7 +34,7 @@ export class MyApp {
       { title: 'Sites touristiques', component: SitesPage },
       { title: 'Lieux favoris', component: FavorisPage },
       { title: 'Trajets enregistrés', component: TrajetsEnregistresPage },
-      { title: 'A proposr', component: AidePage }
+      { title: 'A propos', component: AidePage }
     ];
 
   }
