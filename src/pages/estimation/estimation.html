@@ -118,11 +118,23 @@
                 </ion-col>
             </ion-row>
           </ion-grid>
-          
-            <button ion-button block large color="red" round (tap)="addToFavorites(trajet.userDestination)">
+
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <button ion-button block large color="red" round (tap)="addToFavorites(trajet.userDestination)">
               <ion-icon name="heart"></ion-icon>
               <div>Ajouter au Favoris</div>
             </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button block large round (tap)="addToSite(trajet.userDestination)">
+                  <ion-icon name="heart"></ion-icon>
+                  <div>Ajouter aux sites</div>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
           
         </ion-list>
 

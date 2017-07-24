@@ -44,6 +44,7 @@ export class EstimationPage {
   rows: GoogleMapsApiRow[];
   array_Hotel: Array<Hotel>;
   array_restaurant: Array<Restaurant>;  
+  sites: FirebaseListObservable<any>; 
   favoriteplaces: FirebaseListObservable<any>;
   
   //favoriteplacesDBURL: string = "https://projet-tutore-1497454700964.firebaseio.com/favoriteplaces";
@@ -62,6 +63,8 @@ export class EstimationPage {
     if (this._connectedToInternet) {
       //Ci-dessous on fait le lien entre notre base sur firebase et notre variable favoritesplaces
       this.favoriteplaces = af.list('/favoriteplaces');
+      this.sites = af.list('/sites');  
+      
       this.Initialise();
       this.setDistanceDuration();
       //On décide si l'on doit compter ou pas
@@ -299,7 +302,6 @@ export class EstimationPage {
       title: "Hotels"
     });
   }
-
   
   /** ENREGISTRE LE LIEU DANS FIREBASE
    * @param favoritePlace Le lieu à enregistrer
@@ -327,6 +329,27 @@ export class EstimationPage {
       formatted_address: favoritePlace.formatted_address,
       geometry: favoritePlace.geometry,
       picture_URL: favoritePlace.url_to_main_Image            
+    });
+    
+    this.presentToast(successtoastMessage);
+  }
+
+  public addToSite(site: GooglePlaceApiResult)
+  {    
+    
+    let successtoastMessage: string = site.name + " ajouté aux sites";
+    let failuretoastMessage: string = "Echec d'ajout " + site.name + " aux sites !";
+    
+    this.sites.push({
+      descriptif: "",
+      pays: "",
+      place_id: site.place_id,
+      libelle: site.name,
+      types: site.types,
+      formatted_address: site.formatted_address,
+//      geometry: site.geometry,
+      picture_URL: site.url_to_main_Image,
+                
     });
     
     this.presentToast(successtoastMessage);
