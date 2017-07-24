@@ -1,13 +1,30 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Modal Site</ion-title>
+    <ion-toolbar>
+      <ion-buttons end>
+        <button ion-button color="danger" (tap)="closeModal()">Fermer</button>
+      </ion-buttons>
+      <ion-title>Aperçu</ion-title>
+    </ion-toolbar>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h1>HI everyone, I'm Modal ;) </h1>
-    
+
+  <h2 text-center>{{ site.libelle }}</h2>
+<!--
+  <h3 text-center>{{ site.formatted_address }}</h3>
+-->
+<ion-card>
+  <img [src]="site.picture_URL" alt="Image de destination"/>
+</ion-card>
+  
+<!--
+  <p> Pays : {{ site.pays }}</p>
+-->
+  <div>
+    <h3 text-center>Description</h3>
+    <p> {{site.descriptif }} </p>
+  </div>
+
 </ion-content>

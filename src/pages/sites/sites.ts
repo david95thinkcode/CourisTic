@@ -1,9 +1,10 @@
 import { Component }                                   from '@angular/core';
 import { NavController, ToastController }              from 'ionic-angular';
-import { NavParams, ModalController }                  from 'ionic-angular';
+import { NavParams, ModalController, ViewController }  from 'ionic-angular';
 import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
 import { GooglePlaceApiResult   }                      from '../../models/googleplaceapi-result.model';
-//import { GooglePlaceApiService }                       from '../../services/googleplaceapi.service';
+import { Site }                                        from '../../models/app/site.model';
+import { SiteModalPage  }                              from '../../pages/sitemodal/sitemodal';
 
 @Component({
   selector: 'page-sites',
@@ -12,23 +13,40 @@ import { GooglePlaceApiResult   }                      from '../../models/google
 
 export class SitesPage {
 
-  sites: FirebaseListObservable<any>; 
-  modalCtrl: ModalController; 
+  sites: FirebaseListObservable<any>;  
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, private navParams: NavParams, af: AngularFireDatabase) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public toastCtrl: ToastController, private navParams: NavParams, af: AngularFireDatabase) {
 
-      this.sites = af.list('/sites');  
-      console.log("table crée");
+      this.sites = af.list('/sites');
   }
 
-  presentProfileModal() {
-   //let siteModal = this.modalCtrl.create(Profile, { userId: 8675309 });
-   //siteModal.present();
- }
+  /** Open a modal and send to it send it site data to show */
+  presentModal(site:any) {
+    /*
+      //TODO : Think about that process
+      //We create a Site Object
+      //We pass to it the data from the received parameter (site)
+      //We send site object to modal
 
-  /**
-   * Retire un site
-   */
+      let siteObj: Site = new Site();    
+      siteObj.libelle = site.libelle;
+      siteObj.descriptif = site.descriptif;
+    */
+    console.log(site);
+    let siteModal = this.modalCtrl.create(SiteModalPage, site);
+    siteModal.present();
+  }
+  
+  private presentToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  /**  Retire un site*/
+  /*
   public remove(siteId: string) 
   {
     let successMessage: string = "Retiré avec succès ";
@@ -38,38 +56,6 @@ export class SitesPage {
     .then( succes => this.presentToast(successMessage))
     .catch( echec => this.presentToast(failureMessage));
   }
+  */
 
-
-  /** ENREGISTRE LE SITE DANS FIREBASE
-   * @param site Le lieu à enregistrer
-   */
-  public add(site: GooglePlaceApiResult)
-  {    
-    
-    let successtoastMessage: string = site.name + " ajouté aux sites";
-    let failuretoastMessage: string = "Echec d'ajout " + site.name + " aux sites !";
-    
-    this.sites.push({
-      description: "",
-      pays: "",
-      place_id: site.place_id,
-      libelle: site.name,
-      types: site.types,
-      vinicity: site.vicinity,
-      formatted_address: site.formatted_address,
-      geometry: site.geometry,
-      picture_URL: site.url_to_main_Image,
-                
-    });
-    
-    this.presentToast(successtoastMessage);
-  }
-
-   private presentToast(message: string) {
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3000
-    });
-    toast.present();
-  }
 }
