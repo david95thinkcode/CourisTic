@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar>
+    <ion-toolbar>
+      <ion-buttons start>
+        <button ion-button (tap)="closeModal()">Annuler</button>
+      </ion-buttons>
+      <ion-buttons end>
+        <button ion-button color="danger" (tap)="updatesite(site.$key, description)">
+          Enregistrer
+        </button>        
+      </ion-buttons>
+      <ion-title></ion-title>
+    </ion-toolbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<h2 text-center>
+  <ion-icon></ion-icon>
+  Remarque
+</h2>
+<p text-center>Vous avez le droit de modifier uniquement la description du lieu. 
+  La modification des autres informations supplémentaire, se verra intégrer dans les prochaines mises à jours.
+</p>  
+
+<!--
+<ion-card>
+  <img [src]="site.picture_URL" alt="Image de destination"/>
+</ion-card>
+-->
+<h3 text-center>
+  Lieu : {{ site.libelle }}
+</h3>
+<ion-list>
+
+  <ion-item>
+    <ion-label floating>Description </ion-label>
+    <ion-textarea rows="10" [(ngModel)]="description"> {{ description }} </ion-textarea>
+  </ion-item>
+
+<!-- 
+<h3>Les éléments d'adresse </h3>
+  <ion-item>
+    <ion-label floating>Adresse</ion-label>
+    <ion-input type="text" > {{ site.formatted_address }} </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Pays</ion-label>
+    <ion-input type="text"> {{ site.pays }} </ion-input>
+  </ion-item>
+-->
+  <br>
+  <button ion-button full round (tap)="updatesite(site.$key, description)">
+    Enregistrer
+  </button>
+</ion-list>
+  
+</ion-content>
