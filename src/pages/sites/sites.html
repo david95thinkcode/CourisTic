@@ -7,16 +7,29 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let site of sites | async">
-        <ion-icon name="pin" item-start></ion-icon>
-        <h2>{{ site.libelle }}</h2>
-        <p> {{ site.formatted_address }}</p>
-      <button ion-button clear item-end (tap)="presentModal(site)">
-        Voir
-      </button>
-    </ion-item>
-  </ion-list>
+<ion-content>
+  <ion-card *ngFor="let site of sites | async" text-center>
+    <ion-card-content text-center>
+      <ion-card-title> {{ site.libelle }} </ion-card-title>
+      <p> {{ site.formatted_address }}</p>
+    </ion-card-content>
+
+    <ion-row no-padding>
+      
+      <ion-col>
+        <button ion-button outline small (tap)="showEstimation(site)" icon-start>
+          <!-- <ion-icon name='pin'></ion-icon>-->
+          S'y rendre
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button outline small (tap)="presentModal(site)" icon-start>
+         <!-- <ion-icon name='share-alt'></ion-icon> -->
+          Aperçu
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
   
 </ion-content>

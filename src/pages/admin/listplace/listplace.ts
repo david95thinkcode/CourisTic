@@ -2,16 +2,16 @@ import { Component }                                   from '@angular/core';
 import { NavController, ToastController }              from 'ionic-angular';
 import { NavParams, ModalController, ViewController }  from 'ionic-angular';
 import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
-import { GooglePlaceApiResult   }                      from '../../models/googleplaceapi-result.model';
-import { Site }                                        from '../../models/app/site.model';
-import { SiteModalPage  }                              from '../../pages/sitemodal/sitemodal';
-import { EstimationPage  }                     from '../../pages/estimation/estimation';
+import { GooglePlaceApiResult   }                      from '../../../models/googleplaceapi-result.model';
+import { Site }                                        from '../../../models/app/site.model';
+import { UpdatePlacePage  }                            from '../updateplace/updateplace';
+
 @Component({
-  selector: 'page-sites',
-  templateUrl: 'sites.html'
+  selector: 'page-listplace',
+  templateUrl: 'listplace.html'
 })
 
-export class SitesPage {
+export class ListPlacePage {
 
   sites: FirebaseListObservable<any>;  
 
@@ -19,26 +19,6 @@ export class SitesPage {
 
       this.sites = af.list('/sites');
   }
-
-  public showEstimation(choice: any) {
-    console.log(choice)
-    let place: GooglePlaceApiResult = new GooglePlaceApiResult();
-    place.name = choice.name;
-    place.place_id = choice.placeid;
-    place.url_to_main_Image = choice.picture_URL;
-    place.geometry = choice.geometry;
-    
-    //Destination valide ???
-    if (choice == null){
-      console.log("Favoris choisi null");
-    }
-    else {       
-      console.log(choice);
-      this.navCtrl.push(EstimationPage, {
-        userChoice: place
-      });
-    }    
-  } 
 
   /** Open a modal and send to it send it site data to show */
   presentModal(site:any) {
@@ -53,7 +33,7 @@ export class SitesPage {
       siteObj.descriptif = site.descriptif;
     */
     console.log(site);
-    let siteModal = this.modalCtrl.create(SiteModalPage, site);
+    let siteModal = this.modalCtrl.create(UpdatePlacePage, site);
     siteModal.present();
   }
   

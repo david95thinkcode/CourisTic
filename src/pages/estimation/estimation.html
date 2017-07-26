@@ -42,8 +42,32 @@
           <ion-card>
             <img [src]="trajet.userDestination.url_to_main_Image" alt="Image de destination"/>
             <ion-card-content>
-              {{trajet.userDestination.name}} est un site historique qui ...
-              {{ trajet.userDestination.description }}
+              <ion-list *ngIf="trajet.itineraire; else nodescripton">
+                  <ion-item>
+                    Nom : {{trajet.userDestination.name}}
+                  </ion-item>
+                  <ion-item>
+                    Adresse : {{ trajet.userDestination.formatted_address }}
+                  </ion-item>
+                  <!--
+                  <ion-item *ngIf="trajet.rating; else norating">
+                    Evaluation : {{ trajet.rating }} / 5
+                  </ion-item>
+                  <ng-template norating>
+                    Aucune note n'a été attribué à ce lieu pour l'instant. 
+                  </ng-template>
+                -->
+              </ion-list>
+              <ng-template #nodescripton>
+                <ion-list>
+                  <ion-item>
+                    Nom : {{trajet.userDestination.name}}
+                  </ion-item>
+                  <ion-item>
+                    Adresse : {{ trajet.userDestination.formatted_address }}
+                  </ion-item>
+                </ion-list>
+              </ng-template>              
             </ion-card-content>
           </ion-card>
         </ion-list>
@@ -56,7 +80,7 @@
             <ion-card-content class="estimation-resume">
               <ion-card-title text-center>
                 Pour aller à {{ trajet.userDestination.name }}, prévoyez <br>
-                {{ cout_trajet }} {{ _devise }}
+                {{ cout_trajet | number:'.1-1'}} {{ _devise }}
               </ion-card-title>
             </ion-card-content>
           </ion-card>
@@ -95,7 +119,7 @@
           <ion-grid>
             <ion-row>
                 <ion-col>
-                  <ion-card (tap)="showHotels()">
+                  <ion-card (tap)="showHotels()" class="bouton">
                     <!--<img src=""/>-->
                     <ion-card-content text-center>
                       <ion-card-title>
@@ -106,11 +130,11 @@
                   </ion-card>
                 </ion-col>
                 <ion-col>
-                  <ion-card (tap)="showRestaurant()">
+                  <ion-card (tap)="showRestaurant()" class="bouton">
                   <!--  <img src="/ressources/gow.jpg"/>-->
                     <ion-card-content text-center>
                       <ion-card-title>
-                        Restaurants
+                        Resto
                         </ion-card-title>
                       <h2> {{ nombreRestaurant }} </h2>
                     </ion-card-content>
@@ -122,14 +146,13 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <button ion-button block large color="red" round (tap)="addToFavorites(trajet.userDestination)">
-              <ion-icon name="heart"></ion-icon>
-              <div>Ajouter au Favoris</div>
-            </button>
+                <button ion-button block outline (tap)="addToFavorites(trajet.userDestination)">
+                  <ion-icon name="heart"></ion-icon>
+                  Ajouter au Favoris
+                </button>
               </ion-col>
               <ion-col>
-                <button ion-button block large round (tap)="addToSite(trajet.userDestination)">
-                  <ion-icon name="heart"></ion-icon>
+                <button ion-button block outline (tap)="addToSite(trajet.userDestination)">
                   <div>Ajouter aux sites</div>
                 </button>
               </ion-col>
@@ -141,7 +164,7 @@
         <ion-list *ngSwitchCase="'details'">
           <ion-card> <!-- Transport --> 
             <ion-card-title text-center>
-              Transport : {{ trajet.cout_transport }}
+              Transport : {{ trajet.cout_transport | number:'.1-1' }}
             </ion-card-title>
             <ion-card-content>
               <ion-list radio-group>
@@ -194,7 +217,7 @@
           </ion-card>
           <ion-card> <!-- Restauration --> 
             <ion-card-title text-center>
-              Restauration : {{ trajet.cout_restauration}}
+              Restauration : {{ trajet.cout_restauration}} {{ _devise }}
             </ion-card-title>
             <ion-card-content>
               <ion-list>

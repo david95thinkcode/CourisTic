@@ -30,7 +30,7 @@ export class GoogleMapsApiService {
    public getDistanceMatrix(origins: IonicNativeGeolocation, destinations: GooglePlaceApiResult): Promise<GoogleMapsApiGlobal> {
         
         let mode :string = "driving";
-        let language: string = "en";
+        let language: string = "fr";
         let p_origin: string = ''; //contient la paramètre origins formaté utilisé dans < parameters >
         let parameters: string = ''; //rassemble tous les paramètres
 

@@ -24,6 +24,7 @@ export class ListeLieuxProchesPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public googlePlaceApiService: GooglePlaceApiService) 
   {
     this.results = navParams.get('array');
+    console.log(this.results);
     this.title = navParams.get('title');
     this.Initialise(); 
   }

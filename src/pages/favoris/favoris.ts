@@ -25,6 +25,7 @@ export class FavorisPage {
     place.name = choice.name;
     place.place_id = choice.placeid;
     place.url_to_main_Image = choice.picture_URL;
+    place.geometry = choice.geometry;
     
     //Destination valide ???
     if (choice == null){
@@ -33,7 +34,7 @@ export class FavorisPage {
     else {       
       console.log(choice);
       this.navCtrl.push(EstimationPage, {
-        userChoice: choice
+        userChoice: place
       });
     }    
   } 
