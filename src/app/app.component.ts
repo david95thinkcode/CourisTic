@@ -13,6 +13,7 @@ import { AidePage }                     from '../pages/aide/aide';
 import { RecherchePage }                from '../pages/recherche/recherche';
 import { EstimationPage }               from '../pages/estimation/estimation';
 import { ListeLieuxProchesPage  }       from '../pages/listelieuxproches/listelieuxproches';
+import { ListPlacePage  }               from '../pages/admin/listplace/listplace';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,7 +34,8 @@ export class MyApp {
       { title: 'Accueil', component: HomePage },
       { title: 'Sites touristiques', component: SitesPage },
       { title: 'Lieux favoris', component: FavorisPage },
-      { title: 'Trajets enregistrés', component: TrajetsEnregistresPage },
+      { title: 'Modifier un site (Admin)', component: ListPlacePage },
+      //{ title: 'Trajets enregistrés', component: TrajetsEnregistresPage },
       { title: 'A propos', component: AidePage }
     ];
 

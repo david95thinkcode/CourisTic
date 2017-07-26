@@ -16,6 +16,9 @@ import { ListeLieuxProchesPage  }     from '../pages/listelieuxproches/listelieu
 import { DisconnectedPage  }          from '../pages/disconnected/disconnected';
 import { NotFoundPage  }              from '../pages/notfound/notfound';
 import { SiteModalPage  }             from '../pages/sitemodal/sitemodal';
+import { ListPlacePage  }             from '../pages/admin/listplace/listplace';
+import { UpdatePlacePage  }           from '../pages/admin/updateplace/updateplace';
+
 //Ionic native
 import { StatusBar }                  from '@ionic-native/status-bar';
 import { SplashScreen }               from '@ionic-native/splash-screen';
@@ -54,7 +57,9 @@ export const firebaseConfig = {
     ListeLieuxProchesPage,
     DisconnectedPage,
     NotFoundPage,
-    SiteModalPage
+    SiteModalPage,
+    ListPlacePage,
+    UpdatePlacePage
   ],
   imports: [
     HttpModule,
@@ -78,7 +83,9 @@ export const firebaseConfig = {
     ListeLieuxProchesPage,
     DisconnectedPage,
     NotFoundPage,
-    SiteModalPage
+    SiteModalPage,
+    ListPlacePage,
+    UpdatePlacePage
   ],
   providers: [
     GooglePlaceApiService,
