@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar class="big-header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modifier un site</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item *ngFor="let site of sites | async">
+        <ion-icon name="pin" item-start></ion-icon>
+        <h2>{{ site.libelle }}</h2>
+        <p> {{ site.formatted_address }}</p>
+      <button ion-button clear item-end (tap)="presentModal(site)">
+        Modifier
+      </button>
+    </ion-item>
+  </ion-list>
+  
+</ion-content>
