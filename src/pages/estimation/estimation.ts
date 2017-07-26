@@ -70,9 +70,9 @@ export class EstimationPage {
       //On décide si l'on doit compter ou pas
       if (this.trajet.itineraire = true ) 
       {
-        console.log(this.trajet.userDestination)
+        //console.log(this.trajet.userDestination)
         this.refillDestination();
-        console.log(this.trajet.userDestination)
+        //console.log(this.trajet.userDestination)
         this.countNearbyPlaces(); 
         this.getGlobalPrice();
       }  
@@ -84,6 +84,7 @@ export class EstimationPage {
   private Initialise() {
     this._devise = " Francs CFA"
     this._kilometerPrice = 25; //Un kilomètre coute 25 FCFA
+    this.trajet.cout_restauration = 1000; //par défaut
     this.trajet.itineraire = false;
     this.trajet.cout_hebergement = 0;
     this.trajet.cout_restauration = 0;
@@ -99,7 +100,6 @@ export class EstimationPage {
     this.nombreRestaurant = 0;
     this.array_Hotel = [];
     this.array_restaurant = []; 
-    console.log("initialisation : " + this.cout_trajet);
     this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
   }
 
@@ -283,9 +283,9 @@ export class EstimationPage {
     //Donc pour calculer le prix au kilomètre, on converti 
     //la distance en kilomètre multiplié par le prix du km
     this.trajet.cout_transport = this._kilometerPrice * (this.trajet.distance_trajet.value / 1000);
-    //TODO: chercher un moyen de récupérer les deux couts ci-dessous
+    //TODO: chercher un moyen de récupérer les deux coûts ci-dessous
     //this.trajet.cout_hebergement = 0;
-    //this.trajet.cout_restauration = 0;
+    this.trajet.cout_restauration = 1000;
     this.cout_trajet = this.trajet.cout_hebergement + this.trajet.cout_restauration + this.trajet.cout_transport;
   }
 
@@ -347,7 +347,7 @@ export class EstimationPage {
       libelle: site.name,
       types: site.types,
       formatted_address: site.formatted_address,
-//      geometry: site.geometry,
+      geometry: site.geometry,
       picture_URL: site.url_to_main_Image,
                 
     });
