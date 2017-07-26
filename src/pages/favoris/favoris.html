@@ -10,9 +10,11 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let place of favoriteplaces | async">
-        <ion-icon name="pin" item-start (tap)="showEstimation(place)"></ion-icon>
+      <ion-icon name="pin" item-start (tap)="showEstimation(place)"></ion-icon>
+      <div  (tap)="showEstimation(place)">
         <h2>{{ place.name }}</h2>
         <p> {{ place.formatted_address }}</p>
+      </div>        
       <button ion-button clear item-end (tap)="remove(place.$key)">
         Retirer
       </button>

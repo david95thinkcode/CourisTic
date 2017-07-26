@@ -10,20 +10,16 @@
 </ion-header>
 
 <ion-content padding>
-
-  <h2 text-center>{{ site.libelle }}</h2>
 <!--
   <h3 text-center>{{ site.formatted_address }}</h3>
 -->
 <ion-card>
   <img [src]="site.picture_URL" alt="Image de destination"/>
 </ion-card>
-  
-<!--
-  <p> Pays : {{ site.pays }}</p>
--->
-  <div>
-    <h3 text-center>Description</h3>
+  <br>
+
+<h3 text-center>{{ site.libelle }}</h3>
+  <div text-justify padding>
     <p> {{site.descriptif }} </p>
   </div>
 

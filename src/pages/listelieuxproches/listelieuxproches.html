@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar class="big-header">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -12,13 +12,14 @@
   <div *ngIf="results; else connexionFailed">
     <ion-card *ngFor="let result of results" >
     
-      <img [src]="result.url_to_main_Image"/>
+  <!-- <img [src]="result.url_to_main_Image"/>  -->
       <ion-card-content>
         <ion-card-title>
           {{ result.designation }}
         </ion-card-title>
         <p> {{ result.googleDetails.formatted_address }}</p>
         <p> {{  result.googleDetails.vicinity }}</p>
+        
       </ion-card-content>
       
     </ion-card>
