@@ -1,5 +1,6 @@
 {
   "name": "CourisTic",
-  "app_id": "",
-  "type": "ionic-angular"  
+  "app_id": "dd580bc8",
+  "type": "ionic-angular",
+  "integrations": {}
 }
