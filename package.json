@@ -46,7 +46,7 @@
     "zone.js": "0.8.11"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "^3.1.8",
+    "@ionic/app-scripts": "^3.2.0",
     "typescript": "2.3.3"
   },
   "description": "An Trip Project for Africa countries",
